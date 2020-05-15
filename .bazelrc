@@ -1,0 +1,5 @@
+build --cxxopt=-lstdc++fs
+build --cxxopt=-std=c++17
+build --cxxopt=-Wall
+build --cxxopt=-Wextra
+build --cxxopt=-Wpedantic

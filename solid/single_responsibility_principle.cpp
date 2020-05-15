@@ -1,6 +1,8 @@
 /**
  * A given class should be responsible only for doing one thing and one thing only!
  */
+#include <experimental/filesystem>
+#include <unistd.h>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -19,7 +21,7 @@ class SingleResponsibilityPrincipleBADexample
     Journal(const std::string& title) : title_(title) {}
     void AddEntry(const std::string& entry)
     {
-      int count{0};
+      static int count{0};
       entries_.push_back(std::to_string(++count) + ": " + entry);
     }
 
@@ -53,7 +55,7 @@ class SingleResponsibilityPrincipleGOODexample
 
     void AddEntry(const std::string& entry)
     {
-      int count{0};
+      static int count{0};
       entries_.push_back(std::to_string(++count) + ": " + entry);
     }
 
