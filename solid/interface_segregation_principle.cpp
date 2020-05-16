@@ -1,5 +1,6 @@
 /**
  * Do not create interface that are too large.
+ * YAGNI - You Ain't Going to Need It!
  */
 namespace solid
 {

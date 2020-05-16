@@ -1,5 +1,5 @@
 /**
- * The system should open to extensions (for example with inheritance) but closed to modifications
+ * The system should be open to extensions (for example with inheritance) but closed to modifications
  */
 #include <string>
 #include <vector>

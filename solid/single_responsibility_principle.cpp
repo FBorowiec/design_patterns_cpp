@@ -1,5 +1,7 @@
 /**
- * A given class should be responsible only for doing one thing and one thing only!
+ * A given class should be responsible only for doing one thing and one thing only.
+ * Or in other words a class should only have one reason to change.
+ * Separation of concerns - diffrerent classes handling different, independent tasks/problems.
  */
 #include <experimental/filesystem>
 #include <unistd.h>
