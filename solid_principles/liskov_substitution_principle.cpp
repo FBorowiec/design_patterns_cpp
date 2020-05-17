@@ -4,7 +4,7 @@
  */
 #include <iostream>
 
-namespace solid
+namespace solid_principles
 {
 namespace liskov_substitution_principle
 {
@@ -46,7 +46,7 @@ class Square : public Rectangle
   void SetWidth(int width) override {this->width = this->height = width;}
   void SetHeight(int height) override {this->height = this->width = height;}
 };
-}  // bad
+}  // namespace bad
 
 namespace good
 {
@@ -60,10 +60,10 @@ struct RectangleFactory
   static Rectangle CreateRectangle(int w, int h) { return Rectangle(w, h); }
   static Rectangle CreateSquare(int size) { return Rectangle(size, size); }
 };
-}  // good
+}  // namespace good
 
-}  // liskov_substitution_principle
-}  // solid
+}  // namespace liskov_substitution_principle
+}  // namespace solid_principles
 
 // TEST---------------------------------------------------------------------------------------------------------------|
 
@@ -72,7 +72,7 @@ struct RectangleFactory
 namespace
 {
 
-using namespace solid::liskov_substitution_principle;
+using namespace solid_principles::liskov_substitution_principle;
 
 TEST(LiskovSubstitutionPrincipleTest, ViolationOfTheLiskovSubstitutionPrinciple)
 {

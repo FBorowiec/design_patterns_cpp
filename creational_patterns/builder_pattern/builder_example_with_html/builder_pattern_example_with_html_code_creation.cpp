@@ -127,7 +127,7 @@ class HtmlBuilder
 }  // namespace good
 
 }  // namespace builder_pattern
-}  // creational
+}  // namespace creational
 
 // TEST---------------------------------------------------------------------------------------------------------------|
 

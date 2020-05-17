@@ -2,7 +2,7 @@
  * Do not create interface that are too large.
  * YAGNI - You Ain't Going to Need It!
  */
-namespace solid
+namespace solid_principles
 {
 namespace interface_segregation_principle
 {
@@ -37,7 +37,7 @@ struct Scanner : IMachine
   void scan(Document& doc) override { /* Oll Korrect! */ }
   void fax(Document& doc) override { /* BAD! What should a Scanner fax? */ }
 };
-}  // bad
+}  // namespace bad
 
 namespace good
 {
@@ -79,7 +79,7 @@ struct Machine : IMachine
   void print(Document& doc) override { printer.print(doc); }
   void scan(Document& doc) override { scanner.scan(doc); }
 };
-}  // good
+}  // namespace good
 
-}  // interface_segregation_principle
-}  // namespace solid
+}  // namespace interface_segregation_principle
+}  // namespace solid_principles

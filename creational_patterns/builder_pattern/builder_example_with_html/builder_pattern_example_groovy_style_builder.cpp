@@ -64,8 +64,8 @@ struct IMG : Tag
   }
 };
 
-}  // builder_pattern_groovy
-}  // creational
+}  // namespace builder_pattern_groovy
+}  // namespace creational
 
 // TEST---------------------------------------------------------------------------------------------------------------|
 

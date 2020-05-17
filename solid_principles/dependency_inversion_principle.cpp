@@ -11,7 +11,7 @@
 #include <tuple>
 #include <vector>
 
-namespace solid
+namespace solid_principles
 {
 namespace dependency_inverstion_principle
 {
@@ -63,7 +63,7 @@ struct Research  // high-level module
     }
   }
 };
-}  // bad
+}  // namespace bad
 
 namespace good
 {
@@ -104,10 +104,10 @@ struct Research
     }
   }
 };
-}  // good
+}  // namespace good
 
-}  // dependency_inverstion_principle
-}  // namespace solid
+}  // namespace dependency_inverstion_principle
+}  // namespace solid_principles
 
 // TEST---------------------------------------------------------------------------------------------------------------|
 
@@ -116,7 +116,7 @@ struct Research
 namespace
 {
 
-using namespace solid::dependency_inverstion_principle;
+using namespace solid_principles::dependency_inverstion_principle;
 
 TEST(DependencyInversionPrincipleTest, ViolationOfTheDIPexample)
 {

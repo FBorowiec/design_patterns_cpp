@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace solid
+namespace solid_principles
 {
 namespace single_responsibility_principle
 {
@@ -41,7 +41,7 @@ struct Journal
   std::string title_{};
   std::vector<std::string> entries_{};
 };
-}  // bad
+}  // namespace bad
 
 // GOOD EXAMPLE
 namespace good
@@ -79,10 +79,10 @@ struct PersistenceManager
       ofs << e << std::endl;
   }
 };
-}  // good
+}  // namespace good
 
-}  // single_responsibility_principle
-}  // namespace solid
+}  // namespace single_responsibility_principle
+}  // namespace solid_principles
 
 // TEST---------------------------------------------------------------------------------------------------------------|
 #include "gtest/gtest.h"
@@ -90,7 +90,7 @@ struct PersistenceManager
 namespace
 {
 
-using namespace solid::single_responsibility_principle;
+using namespace solid_principles::single_responsibility_principle;
 
 TEST(SingleResponsiblityPrincipleTest, ExampleOfUsingAJournalViolatingTheSRP)
 {

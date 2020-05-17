@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace solid
+namespace solid_principles
 {
 namespace open_closed_principle
 {
@@ -53,7 +53,7 @@ struct ProductFilter
     return products_by_size_and_color;
   }
 };
-}  // bad
+}  // namespace bad
 
 namespace good
 {
@@ -121,10 +121,10 @@ template <typename T> struct AndSpecification : Specification<T>
   Specification<T>& second_spec{};
 };
 
-}  // good
+}  // namespace good
 
-}  // open_closed_principle
-}  // solid
+}  // namespace open_closed_principle
+}  // namespace solid_principles
 
 // TEST---------------------------------------------------------------------------------------------------------------|
 
@@ -134,7 +134,7 @@ template <typename T> struct AndSpecification : Specification<T>
 namespace
 {
 
-using namespace solid::open_closed_principle;
+using namespace solid_principles::open_closed_principle;
 
 TEST(OpenClosedPrincipleTest, ExampleOfClassViolatingTheOCPrinciple)
 {
