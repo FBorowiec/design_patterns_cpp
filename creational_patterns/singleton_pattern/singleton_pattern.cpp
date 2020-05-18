@@ -18,15 +18,26 @@
  * A component which is instantiated only once.
  */
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace creational
 {
 namespace singleton_pattern
 {
 
-class SingletonDatabase
+/**
+ * Dependency injection for testing the singleton's methods.
+ */
+class Database
+{
+ public:
+  virtual int GetPopulation(const std::string& name) = 0;
+};
+
+class SingletonDatabase : public Database
 {
  public:
   SingletonDatabase(SingletonDatabase const&) = delete;
@@ -38,7 +49,7 @@ class SingletonDatabase
     return sdb;
   }
 
-  int GetPopulation(const std::string& name)
+  int GetPopulation(const std::string& name) override
   {
     return capitals[name];
   }
@@ -46,8 +57,7 @@ class SingletonDatabase
  private:
   SingletonDatabase()
   {
-    std::cout << "Initializing database\n";
-    std::ifstream ifs("capitals.txt");
+    std::ifstream ifs("capitals.txt", std::ios::in);
     std::string s, s2;
 
     while(getline(ifs, s))
@@ -61,8 +71,49 @@ class SingletonDatabase
   std::unordered_map<std::string, int> capitals;
 };
 
-}  namespace  // singleton_pattern
-}  namespace  // creational
+class DummyDatabase : public Database
+{
+  std::unordered_map<std::string, int> capitals;
+ public:
+  DummyDatabase() {
+    capitals["alpha"] = 1;
+    capitals["beta"] = 2;
+    capitals["gamma"] = 3;
+  }
+
+  int GetPopulation(const std::string& name) override
+  {
+    return capitals[name];
+  }
+};
+
+struct SingletonRecordFinder
+{
+  int TotalPopulation(std::vector<std::string> names)
+  {
+    int result{0};
+    for (auto& name : names)
+      result += SingletonDatabase::Get().GetPopulation(name);
+    return result;
+  }
+};
+
+struct ConfigurableSingletonRecordFinder
+{
+  Database& db;
+  ConfigurableSingletonRecordFinder(Database& db) : db(db) {}
+
+  int TotalPopulation(std::vector<std::string> names)
+  {
+    int result{0};
+    for (auto& name : names)
+      result += db.GetPopulation(name);
+    return result;
+  }
+};
+
+}  // namespace singleton_pattern
+}  // namespace creational
 
 //TEST----------------------------------------------------------------------------------------------------------------|
 
@@ -76,7 +127,33 @@ using namespace creational::singleton_pattern;
 TEST(SingletonPatternTest, UsageOfTheSingletonPattern)
 {
   std::string city = "Tokyo";
-  std::cout << city << " has population " <<  SingletonDatabase::Get().GetPopulation("Tokyo");
+  std::cout << city << " has population " <<  SingletonDatabase::Get().GetPopulation("Tokyo") << std::endl;
+}
+
+/**
+ * Here a dangerous thing happens. The test is strongly tied to the actual database (capitals.txt),
+ * which makes it more of an integration test than a unit test.
+ */
+TEST(RecordFinderTest, SingletonTotalPopulationTest)
+{
+  SingletonRecordFinder rf;
+  std::vector<std::string> names{"Seoul", "Mexico City"};
+
+  int tp = rf.TotalPopulation(names);
+
+  EXPECT_EQ(17400000+17500000, tp);
+}
+
+/**
+ * The solution is to create a dummy database inheriting from the base database only the methods to be tested.
+ * Then a configurable record finder can therefore test the needed functionalities.
+ */
+TEST(RecordFinderTest, DependantPopulationTest)
+{
+  DummyDatabase db;
+  ConfigurableSingletonRecordFinder rf{db};
+
+  EXPECT_EQ(4, rf.TotalPopulation(std::vector<std::string>{"alpha", "gamma"}));
 }
 
 }  // namespace
