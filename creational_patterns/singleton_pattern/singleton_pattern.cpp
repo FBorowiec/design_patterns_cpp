@@ -16,6 +16,15 @@
  *
  * DESCRIPTION:
  * A component which is instantiated only once.
+ * Making a 'safe' singleton needs:
+ *  - Hiding or deleting the type's constructor, copy constructor
+ *    and copy assignment operators
+ *  - Create a static method that returens a reference to a static member
+ *  - Guaranteed to be thread-safe since C++11
+ * Types with 'hard' dependencies on singletons are difficult to test:
+ *  - Cannot decouple the singleton and supply a fake object
+ * Instead of directly using a singleton, consider depending on an abstraction (eg. an interface)
+ * Consider defining singleton lifetime in DI container.
  */
 #include <iostream>
 #include <fstream>
