@@ -36,6 +36,11 @@ struct Neuron : public SomeNeurons<Neuron>
     this->id = id_++;
   }
 
+  /**
+   * A single object can therefore masquerade as a collection:
+   *  Foo* begin() { return this; }
+   *  Foo* end() { return this+1; }
+   */
   Neuron* begin() { return this; }
   Neuron* end() { return this+1; }
 
