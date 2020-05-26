@@ -9,13 +9,6 @@
  *  Two options:
  *  & Aggregate the decorated object
  *  & Inherit from the decorated object
- *
- * A dynamic decorator keeps the reference to the decorated object(s):
- *  - ColoredShape{Square{}}
- * A static decorator uses mixin inheritance:
- *  - ColoredShape<Square>
- * Both approached allow limitless composition:
- *  - TranspareShape<ColoredShape<Circle>>
  */
 #include<iostream>
 #include<sstream>
@@ -24,6 +17,8 @@
 namespace structural
 {
 namespace decorator_pattern
+{
+namespace static_decorator
 {
 
 struct Shape
@@ -104,6 +99,51 @@ struct TransparentShape : public Shape
   uint8_t transparency_value_;
 };
 
+template <typename T> struct ColoredShape2 : T
+{
+ public:
+  static_assert(std::is_base_of<Shape, T>::value, "Template argument must be a Shape");
+
+  ColoredShape2() {}
+
+  template <typename...Args>
+  ColoredShape2(const std::string color, Args ...args) :
+    T(std::forward<Args>(args)...), color_(color) {}
+
+  std::string Str() const override
+  {
+    std::ostringstream oss;
+    oss << T::Str() << " has the color " << color_;
+    return oss.str();
+  }
+
+ private:
+  std::string color_;
+};
+
+template <typename T> struct TransparentShape2 : T
+{
+ public:
+  static_assert(std::is_base_of<Shape, T>::value, "Template argument must be a Shape");
+
+  TransparentShape2() {}
+
+  template <typename...Args>
+  TransparentShape2(const uint8_t transparency_value, Args ...args) :
+    T(std::forward<Args>(args)...), transparency_value_(transparency_value) {}
+
+  std::string Str() const override
+  {
+    std::ostringstream oss;
+    oss << T::Str() << " has " << static_cast<float>(transparency_value_) / 255.f * 100.f << "% transparency";
+    return oss.str();
+  }
+
+ private:
+  uint8_t transparency_value_;
+};
+
+}  // namespace static_decorator
 }  // namespace decorator_pattern
 }  // namespace structural
 
@@ -114,29 +154,29 @@ struct TransparentShape : public Shape
 namespace
 {
 
-using namespace structural::decorator_pattern;
-
-TEST(DecoratorPatternTest, UsageOfTheDecoratorPattern)
-{
-  Square square{5};
-  ColoredShape red_square{square, "red"};
-  std::cout << square.Str() << std::endl << red_square.Str() << std::endl;
-}
-
-TEST(DecoratorPatternTest, AggregatingTwoDecorators)
-{
-  Square square{5};
-  ColoredShape red_square{square, "red"};
-
-  TransparentShape my_square{red_square, 51};
-  std::cout << my_square.Str() << std::endl;
-}
+using namespace structural::decorator_pattern::static_decorator;
 
 /**
- * This approach has a certain limitation which is that the Circle has a method called resize.
- * Resize isn't part of the Shape interface.
- * So it doesn't allowed to access the underlying API of whatever object we're decorating,
- * unless it's part of some interface.
+ * Mixing inheritance allows to access the APIs of the decorated objects.
  */
+
+TEST(DecoratorPatternTest, AggregatingManyStaticDecorators)
+{
+  ColoredShape2<Circle> green_circle{"green", 5.f};
+
+  green_circle.Resize(2);
+
+  std::cout << green_circle.Str() << std::endl;
+}
+
+TEST(DecoratorPatternTest, AggregatingManyStaticDecoratorsToCreateTransparentShape)
+{
+  ColoredShape2<Circle> green_circle{"green", 5.f};
+
+  green_circle.Resize(2);
+
+  TransparentShape2<ColoredShape2<Square>> square{51, "blue", 10.f};
+  std::cout << square.Str() << std::endl;
+}
 
 }  // namespace
