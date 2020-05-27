@@ -8,11 +8,18 @@
  *   & Can you avoid changing your code?
  *  4. Proxy helps - same interface, entirely different behavior
  *  5. This is called a Communication Proxy
- *  & Other types: logging, vritual, guarding ...
+ *  & Other types: logging, virtual, guarding ...
  *
- * A proxy is a class that functions as an interface to a particular resource.
+ * A proxy is a class that functions as an interface to a particular resource (the interface should be identical).
+ *  - To create it, simply replicate the existing interface of an object.
+ *  - Add relevant functionality to the redefined member functions
  * That resource may be remote, expensive to construct,
  * or may require logging or some other added functionality.
+ *
+ * What's the difference with a decorator?
+ *  - Proxy provides an identical interface; decorator provides an enhanced interface
+ *  - Decorator typically aggregates (or has reference to) what it is decorating; proxy doesn't have to
+ *  - Proxy might not even be working with a materialized object
  */
 #include <memory>
 #include <ostream>
