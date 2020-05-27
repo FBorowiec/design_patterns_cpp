@@ -17,3 +17,12 @@ cc_test(
     "@googletest//:gtest_main",
   ]
 )
+
+cc_test(
+  name = "virtual_proxy_pattern",
+  srcs = ["virtual_proxy_pattern.cpp"],
+  deps = [
+    "@googletest//:gtest",
+    "@googletest//:gtest_main",
+  ]
+)
