@@ -4,16 +4,14 @@
  *  - no inheritance possible
  *  - users might get very confused
  */
-namespace creational
-{
-namespace monostate_pattern
-{
+namespace creational {
+namespace monostate_pattern {
 
-class Printer
-{
+class Printer {
  public:
   int GetId() const { return id; }
   void SetId(int value) { id = value; }
+
  private:
   static int id;
 };
@@ -25,13 +23,11 @@ class Printer
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace creational::monostate_pattern;
 
-TEST(MonostateTest, UsageOfMonostate)
-{
+TEST(MonostateTest, UsageOfMonostate) {
   Printer p;
   int id = p.GetId();
 

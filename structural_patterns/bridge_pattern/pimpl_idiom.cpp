@@ -8,15 +8,11 @@
 #include <memory>
 #include <string>
 
-namespace structural
-{
-namespace bridge_pattern
-{
+namespace structural {
+namespace bridge_pattern {
 
-class Person
-{
+class Person {
  public:
-
   /**
    * The user of the Person do not have to recompile whenever the implementation of PersonImpl changed.
    * This has the advantage therefore of improving compilation speed.
@@ -34,10 +30,9 @@ class Person
 };
 
 // Important NOT to have the Impl in the header file but hide it from the consumer in a cpp file----------------------|
-class Person::PersonImpl
-{
+class Person::PersonImpl {
  public:
-  void Greet(Person* p) { std::cout<<"Hello, my name is " << p->name << std::endl; }
+  void Greet(Person* p) { std::cout << "Hello, my name is " << p->name << std::endl; }
 };
 
 void Person::Greet() { impl->Greet(this); }

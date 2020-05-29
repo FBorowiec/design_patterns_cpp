@@ -9,37 +9,29 @@
 #include <iostream>
 #include <memory>
 
-namespace structural
-{
-namespace facade_pattern
-{
+namespace structural {
+namespace facade_pattern {
 
-struct Shape
-{
+struct Shape {
   virtual void Draw() const = 0;
 };
 
-struct Rectangle : public Shape
-{
+struct Rectangle : public Shape {
   void Draw() const override { std::cout << "Drawing a rectangle...\n"; }
 };
 
-struct Square : public Shape
-{
+struct Square : public Shape {
   void Draw() const override { std::cout << "Drawing a square...\n"; }
 };
 
-struct Circle : public Shape
-{
+struct Circle : public Shape {
   void Draw() const override { std::cout << "Drawing a circle...\n"; }
 };
 
 // Facade
-struct ShapeFacade
-{
+struct ShapeFacade {
  public:
-  ShapeFacade()
-  {
+  ShapeFacade() {
     circle_ = std::make_unique<Circle>();
     square_ = std::make_unique<Square>();
     rectangle_ = std::make_unique<Rectangle>();
@@ -62,13 +54,11 @@ struct ShapeFacade
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace structural::facade_pattern;
 
-TEST(FacadePatternTest, UsageOfTheFacadePattern)
-{
+TEST(FacadePatternTest, UsageOfTheFacadePattern) {
   ShapeFacade sf;
 
   sf.DrawCircle();

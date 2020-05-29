@@ -24,39 +24,35 @@
 #include <memory>
 #include <ostream>
 
-namespace structural
-{
-namespace proxy_pattern
-{
+namespace structural {
+namespace proxy_pattern {
 
 /**
  * Smart pointers are actually proxies!
  */
 
-struct BankAccount
-{
+struct BankAccount {
   virtual ~BankAccount() = default;
   virtual void Deposit(int amount) = 0;
   virtual void Withdraw(int amount) = 0;
 };
 
-struct CurrentAccount : public BankAccount
-{
+struct CurrentAccount : public BankAccount {
  public:
   explicit CurrentAccount(const int balance) : balance_(balance) {}
 
   void Deposit(int amount) override { balance_ += amount; }
-  void Withdraw(int amount) override { if(amount <= balance_) balance_ -= amount; }
+  void Withdraw(int amount) override {
+    if (amount <= balance_) balance_ -= amount;
+  }
 
-  friend std::ostream& operator<<(std::ostream& os, const CurrentAccount& obj)
-  {
+  friend std::ostream& operator<<(std::ostream& os, const CurrentAccount& obj) {
     return os << "balance: " << obj.balance_;
   }
 
  private:
   int balance_;
 };
-
 
 }  // namespace proxy_pattern
 }  // namespace structural
@@ -65,19 +61,17 @@ struct CurrentAccount : public BankAccount
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace structural::proxy_pattern;
 
-TEST(ProxyPatternTest, UsageOfTheProxyPattern)
-{
+TEST(ProxyPatternTest, UsageOfTheProxyPattern) {
   BankAccount* a = new CurrentAccount(123);
   a->Deposit(321);
   delete a;
 
   auto b = std::make_shared<CurrentAccount>(123);  // Smart pointer that offers enhanced functionalities
-  BankAccount* actual = b.get();  // Enhancement
+  BankAccount* actual = b.get();                   // Enhancement
   actual->Deposit(123);
 }
 

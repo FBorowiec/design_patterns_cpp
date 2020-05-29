@@ -21,24 +21,16 @@
 #include <cmath>
 #include <iostream>
 
-namespace creational
-{
-namespace factory_pattern
-{
+namespace creational {
+namespace factory_pattern {
 
-enum class PointType
-{
-  cartesian,
-  polar
-};
+enum class PointType { cartesian, polar };
 
-class Point
-{
+class Point {
  public:
   Point(float x, float y) : x(x), y(y) {}
 
-  friend std::ostream &operator<<(std::ostream& os, const Point& point)
-  {
+  friend std::ostream& operator<<(std::ostream& os, const Point& point) {
     os << "x: " << point.x << " y: " << point.y;
     return os;
   }
@@ -47,17 +39,10 @@ class Point
   float x, y;
 };
 
-struct PointFactory
-{
-  static Point NewCartesian(float x, float y)
-  {
-    return {x, y};
-  }
+struct PointFactory {
+  static Point NewCartesian(float x, float y) { return {x, y}; }
 
-  static Point NewPolar(float rho, float theta)
-  {
-    return {rho*std::cos(theta), rho*std::sin(theta)};
-  }
+  static Point NewPolar(float rho, float theta) { return {rho * std::cos(theta), rho * std::sin(theta)}; }
 };
 
 }  // namespace factory_pattern
@@ -67,13 +52,11 @@ struct PointFactory
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace creational::factory_pattern;
 
-TEST(FactoryPatternTest, UsageOfTheFactory)
-{
+TEST(FactoryPatternTest, UsageOfTheFactory) {
   auto p = PointFactory::NewPolar(5, M_PI_4);
   std::cout << p << std::endl;
 }

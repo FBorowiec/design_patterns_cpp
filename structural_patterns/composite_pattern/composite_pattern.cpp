@@ -8,35 +8,28 @@
  * Composite desing pattern is used to treat both single (scalar) and composite objects uniformly:
  *  - i.e. Foo and Collection<Foo> have common APIs
  */
-#include<iostream>
-#include<string>
-#include<vector>
+#include <iostream>
+#include <string>
+#include <vector>
 
-namespace structural
-{
-namespace composite_pattern
-{
+namespace structural {
+namespace composite_pattern {
 
 // Composite
-struct GraphicObject
-{
+struct GraphicObject {
   virtual void Draw() = 0;
 };
 
-struct Circle : public GraphicObject
-{
-  void Draw() override { std::cout<< "Circle" << std::endl; }
+struct Circle : public GraphicObject {
+  void Draw() override { std::cout << "Circle" << std::endl; }
 };
 
-struct Group : GraphicObject
-{
+struct Group : GraphicObject {
   Group(std::string name) : name_(name) {}
 
-  void Draw() override
-  {
+  void Draw() override {
     std::cout << "Group " << name_ << " contains: " << std::endl;
-    for (auto&& o : objects)
-      o->Draw();
+    for (auto&& o : objects) o->Draw();
   }
 
   std::string name_;
@@ -50,13 +43,11 @@ struct Group : GraphicObject
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace structural::composite_pattern;
 
-TEST(CompositePatternTest, UsageOfTheCompositePattern)
-{
+TEST(CompositePatternTest, UsageOfTheCompositePattern) {
   Group root("root");
   Circle c1, c2;
   root.objects.push_back(&c1);

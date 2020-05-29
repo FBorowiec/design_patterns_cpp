@@ -14,10 +14,8 @@
 #include <iostream>
 #include <string>
 
-namespace structural
-{
-namespace bridge_pattern
-{
+namespace structural {
+namespace bridge_pattern {
 
 /**
  * Given:
@@ -34,51 +32,39 @@ namespace bridge_pattern
  * But using the bridge pattern this can be avoided.
  */
 
-struct Renderer
-{
+struct Renderer {
   virtual void RenderCircle(float x, float y, float radius) = 0;
 };
 
-struct RasterRenderer : public Renderer
-{
-  virtual void RenderCircle(float x, float y, float radius) override
-  {
-    std::cout<<"Rasterizing a (" <<x<<", "<<y<<") circle of radius " << radius << std::endl;
+struct RasterRenderer : public Renderer {
+  virtual void RenderCircle(float x, float y, float radius) override {
+    std::cout << "Rasterizing a (" << x << ", " << y << ") circle of radius " << radius << std::endl;
   }
 };
 
-struct VectorRenderer : public Renderer
-{
-  virtual void RenderCircle(float x, float y, float radius) override
-  {
-    std::cout<<"Drawing a vector (" <<x<<", "<<y<<") circle of radius " << radius << std::endl;
+struct VectorRenderer : public Renderer {
+  virtual void RenderCircle(float x, float y, float radius) override {
+    std::cout << "Drawing a vector (" << x << ", " << y << ") circle of radius " << radius << std::endl;
   }
 };
 
-struct Shape
-{
+struct Shape {
  protected:
   Shape(Renderer& renderer) : renderer_bridge(renderer) {}
 
   // Bridge
   Renderer& renderer_bridge;
 
-
  public:
   virtual void Draw() = 0;
   virtual void Resize(float factor) = 0;
 };
 
-struct Circle : public Shape
-{
+struct Circle : public Shape {
  public:
-  Circle(Renderer& renderer, float x, float y, float radius) :
-          Shape(renderer), x_(x), y_(y), radius_(radius) {}
+  Circle(Renderer& renderer, float x, float y, float radius) : Shape(renderer), x_(x), y_(y), radius_(radius) {}
 
-  void Draw() override
-  {
-    renderer_bridge.RenderCircle(x_, y_, radius_);
-  }
+  void Draw() override { renderer_bridge.RenderCircle(x_, y_, radius_); }
 
   void Resize(float factor) override { radius_ *= factor; }
 
@@ -93,14 +79,12 @@ struct Circle : public Shape
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace structural::bridge_pattern;
 
-TEST(BridgePatternTest, UsageOfTheBridgePattern)
-{
-  //Bridge
+TEST(BridgePatternTest, UsageOfTheBridgePattern) {
+  // Bridge
   RasterRenderer rr;
 
   Circle raster_circle(rr, 5, 5, 5);

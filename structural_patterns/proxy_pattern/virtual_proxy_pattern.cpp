@@ -5,38 +5,25 @@
 #include <iostream>
 #include <memory>
 
-namespace structural
-{
-namespace proxy_pattern
-{
+namespace structural {
+namespace proxy_pattern {
 
-struct Image
-{
+struct Image {
   virtual void Draw() = 0;
 };
 
-struct Bitmap : public Image
-{
-  Bitmap(const std::string& filename)
-  {
-    std::cout << "Loading bitmap from " << filename << std::endl;
-  }
+struct Bitmap : public Image {
+  Bitmap(const std::string& filename) { std::cout << "Loading bitmap from " << filename << std::endl; }
 
-  void Draw() override
-  {
-    std::cout << "Drawing bitmap" << std::endl;
-  }
+  void Draw() override { std::cout << "Drawing bitmap" << std::endl; }
 };
 
 // Virtual Proxy
-struct LazyBitmap : public Image
-{
+struct LazyBitmap : public Image {
   LazyBitmap(const std::string& filename) : filename_(filename) {}
 
-  void Draw() override
-  {
-    if (!bmp)
-      bmp = std::make_unique<Bitmap>(filename_);
+  void Draw() override {
+    if (!bmp) bmp = std::make_unique<Bitmap>(filename_);
     bmp->Draw();
   }
 
@@ -52,20 +39,17 @@ struct LazyBitmap : public Image
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace structural::proxy_pattern;
 
-TEST(VirtualProxyPatternTest, NoUsageOfTheVirtualProxyPattern)
-{
+TEST(VirtualProxyPatternTest, NoUsageOfTheVirtualProxyPattern) {
   // Rendering is not performed in proper order!
   Bitmap bmp{"pokemon.png"};
   bmp.Draw();
 }
 
-TEST(VirtualProxyPatternTest, ProperUsageOfTheVirtualProxyPattern)
-{
+TEST(VirtualProxyPatternTest, ProperUsageOfTheVirtualProxyPattern) {
   // Now it is!
   LazyBitmap bmp{"pokemon.png"};
   bmp.Draw();

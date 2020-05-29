@@ -2,18 +2,16 @@
 #include <memory>
 #include <string>
 
-namespace structural
-{
-namespace bridge_pattern
-{
+namespace structural {
+namespace bridge_pattern {
 
-template <typename T> class Pimpl
-{
+template <typename T>
+class Pimpl {
  public:
   Pimpl();
 
-  template <typename ...Args>
-  Pimpl (Args&& ...args);
+  template <typename... Args>
+  Pimpl(Args&&... args);
 
   ~Pimpl();
 
@@ -26,26 +24,28 @@ template <typename T> class Pimpl
 
 // Important NOT to have the implementation details in the header file but hide it from the consumer in a cpp file----|
 
-template<typename T>
+template <typename T>
 Pimpl<T>::Pimpl() : impl(new T) {}
 
-template<typename T>
-template<typename... Args>
-Pimpl<T>::Pimpl(Args &&... args) : impl(new T{std::forward<Args>(args)... }) {}
+template <typename T>
+template <typename... Args>
+Pimpl<T>::Pimpl(Args&&... args) : impl(new T{std::forward<Args>(args)...}) {}
 
-
-template<typename T>
+template <typename T>
 Pimpl<T>::~Pimpl() {}
 
-template<typename T>
-T* Pimpl<T>::operator->() { return *impl.get(); }
+template <typename T>
+T* Pimpl<T>::operator->() {
+  return *impl.get();
+}
 
-template<typename T>
-T& Pimpl<T>::operator*() { return impl.get(); }
+template <typename T>
+T& Pimpl<T>::operator*() {
+  return impl.get();
+}
 
 // Consumer
-class Foo
-{
+class Foo {
  public:
   class Impl;
 
@@ -53,8 +53,7 @@ class Foo
   Pimpl<Impl> impl;
 };
 
-class Foo::Impl
-{
+class Foo::Impl {
   // implementation details
 };
 

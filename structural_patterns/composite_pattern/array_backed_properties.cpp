@@ -4,13 +4,10 @@
 #include <iostream>
 #include <numeric>
 
-namespace structural
-{
-namespace composite_pattern
-{
+namespace structural {
+namespace composite_pattern {
 
-namespace bad
-{
+namespace bad {
 
 /**
  * This approach is ugly and doesn't scale.
@@ -18,17 +15,16 @@ namespace bad
  * it would be very tedious to actually implement all these calculations.
  * Every single aggregate like sum(), average() and max() would need to be rewritten.
  */
-class Creature
-{
+class Creature {
  public:
   int get_strength() const { return strength_; }
-  void set_strength(int strength) { Creature::strength_=strength; }
+  void set_strength(int strength) { Creature::strength_ = strength; }
 
   int get_agility() const { return agility_; }
-  void set_agility(int agility) { Creature::agility_=agility; }
+  void set_agility(int agility) { Creature::agility_ = agility; }
 
   int get_intelligence() const { return intelligence_; }
-  void set_intelligence(int intelligence) { Creature::intelligence_=intelligence; }
+  void set_intelligence(int intelligence) { Creature::intelligence_ = intelligence; }
 
   // sum, average, max.
   double sum() const { return strength_ + agility_ + intelligence_; }
@@ -41,25 +37,21 @@ class Creature
   int charisma;
 };
 
-} // namespace bad
+}  // namespace bad
 
-namespace good
-{
+namespace good {
 
 /**
  * The solution to this problem is to have aggregate storage (composites).
  * C++ uses "duck typing", expecting enumerable (enum Agilities) types to provide begin() and end().
  */
-class Creature
-{
+class Creature {
  public:
   int GetStrength() const { return abilities[strength]; }
   void SetStrength(int value) { abilities[strength] = value; }
 
-
   int GetAgility() const { return abilities[agility]; }
   void SetAgility(int value) { abilities[agility] = value; }
-
 
   int GetIntelligence() const { return abilities[intelligence]; }
   void SetIntelligence(int value) { abilities[intelligence] = value; }
@@ -73,7 +65,7 @@ class Creature
   std::array<int, count> abilities;
 };
 
-} // namespace good
+}  // namespace good
 
 }  // namespace composite_pattern
 }  // namespace structural
@@ -82,22 +74,17 @@ class Creature
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace structural::composite_pattern::good;
 
-TEST(CompositePatternArrayBackedProperties, UsageOfTheCompositePattern)
-{
+TEST(CompositePatternArrayBackedProperties, UsageOfTheCompositePattern) {
   Creature orc;
   orc.SetStrength(16);
   orc.SetAgility(11);
   orc.SetIntelligence(9);
 
-  std::cout << "The orc has an average stat of: "
-            << orc.Average()
-            << " and a maximum stat of "
-            << orc.Max() << "\n";
+  std::cout << "The orc has an average stat of: " << orc.Average() << " and a maximum stat of " << orc.Max() << "\n";
 }
 
 }  // namespace

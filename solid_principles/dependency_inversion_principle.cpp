@@ -11,31 +11,21 @@
 #include <tuple>
 #include <vector>
 
-namespace solid_principles
-{
-namespace dependency_inverstion_principle
-{
+namespace solid_principles {
+namespace dependency_inverstion_principle {
 
-enum class Relationship
-{
-  parent,
-  child,
-  sibling
-};
+enum class Relationship { parent, child, sibling };
 
-struct Person
-{
+struct Person {
   std::string name;
 };
 
-namespace bad
-{
+namespace bad {
 struct Relationships  // low-level module
 {
   std::vector<std::tuple<Person, Relationship, Person>> relations{};
 
-  void AddParentAndChild(const Person& parent, const Person& child)
-  {
+  void AddParentAndChild(const Person& parent, const Person& child) {
     relations.push_back({parent, Relationship::parent, child});
     relations.push_back({child, Relationship::child, parent});
   }
@@ -47,28 +37,23 @@ struct Research  // high-level module
    * BAD! Dependency on a low-level module (Relationships) inside a high-level module.
    * BAD! Research accesses the details of the low-level module.
    */
-  Research(Relationships& relationships)
-  {
+  Research(Relationships& relationships) {
     /**
      * Now the high-level module Research depends on the implementation details
      * (here a vector of tuples) of the low-level module.
      */
     auto& relations = relationships.relations;
-    for (auto&& [first, rel, second] : relations)
-    {
-      if (first.name == "John" && rel == Relationship::parent)
-      {
-        std::cout<<"John has a child called " << second.name << std::endl;
+    for (auto&& [first, rel, second] : relations) {
+      if (first.name == "John" && rel == Relationship::parent) {
+        std::cout << "John has a child called " << second.name << std::endl;
       }
     }
   }
 };
 }  // namespace bad
 
-namespace good
-{
-struct RelationshipsBrowser
-{
+namespace good {
+struct RelationshipsBrowser {
   virtual std::vector<Person*> FindAllChildrenOf(const std::string& name) = 0;
 };
 
@@ -76,31 +61,24 @@ struct Relationships : public RelationshipsBrowser  // low-level module
 {
   std::vector<std::tuple<Person, Relationship, Person>> relations{};
 
-  void AddParentAndChild(const Person& parent, const Person& child)
-  {
+  void AddParentAndChild(const Person& parent, const Person& child) {
     relations.push_back({parent, Relationship::parent, child});
     relations.push_back({child, Relationship::child, parent});
   }
 
-  std::vector<Person*> FindAllChildrenOf(const std::string& name) override
-  {
+  std::vector<Person*> FindAllChildrenOf(const std::string& name) override {
     std::vector<Person*> result{};
-    for (auto&& [first, rel, second] : relations)
-    {
-      if (first.name == name && rel == Relationship::parent)
-        result.push_back(&second);
+    for (auto&& [first, rel, second] : relations) {
+      if (first.name == name && rel == Relationship::parent) result.push_back(&second);
     }
     return result;
   }
 };
 
-struct Research
-{
-  Research(RelationshipsBrowser& browser)
-  {
-    for (auto& child : browser.FindAllChildrenOf("John"))
-    {
-      std::cout<<"John has a child called " << child->name << std::endl;
+struct Research {
+  Research(RelationshipsBrowser& browser) {
+    for (auto& child : browser.FindAllChildrenOf("John")) {
+      std::cout << "John has a child called " << child->name << std::endl;
     }
   }
 };
@@ -113,13 +91,11 @@ struct Research
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace solid_principles::dependency_inverstion_principle;
 
-TEST(DependencyInversionPrincipleTest, ViolationOfTheDIPexample)
-{
+TEST(DependencyInversionPrincipleTest, ViolationOfTheDIPexample) {
   Person parent{"John"};
   Person child1{"Chris"}, child2{"Matt"};
 
@@ -134,8 +110,7 @@ TEST(DependencyInversionPrincipleTest, ViolationOfTheDIPexample)
    */
 }
 
-TEST(DependencyInversionPrincipleTest, ProperFollowingOfTheDIPexample)
-{
+TEST(DependencyInversionPrincipleTest, ProperFollowingOfTheDIPexample) {
   /**
    * Code needs no change.
    * It is better to have dependencies on abstraction rather than concrete implementations.

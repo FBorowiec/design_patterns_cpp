@@ -17,30 +17,25 @@
  * Both approached allow limitless composition:
  *  - TranspareShape<ColoredShape<Circle>>
  */
-#include<iostream>
-#include<sstream>
-#include<string>
+#include <iostream>
+#include <sstream>
+#include <string>
 
-namespace structural
-{
-namespace decorator_pattern
-{
+namespace structural {
+namespace decorator_pattern {
 
-struct Shape
-{
+struct Shape {
   virtual std::string Str() const = 0;
 };
 
-struct Circle : public Shape
-{
+struct Circle : public Shape {
  public:
-  Circle () {}
-  Circle (float radius) : radius_(radius) {}
+  Circle() {}
+  Circle(float radius) : radius_(radius) {}
 
   void Resize(float factor) { radius_ *= factor; }
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << "A circle of radius " << radius_;
     return oss.str();
@@ -50,14 +45,12 @@ struct Circle : public Shape
   float radius_;
 };
 
-struct Square : public Shape
-{
+struct Square : public Shape {
  public:
-  Square () {}
-  Square (float side) : side_(side) {}
+  Square() {}
+  Square(float side) : side_(side) {}
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << "A square with side " << side_;
     return oss.str();
@@ -68,13 +61,11 @@ struct Square : public Shape
 };
 
 // Decorator with new functionality
-struct ColoredShape : public Shape
-{
+struct ColoredShape : public Shape {
  public:
   ColoredShape(Shape& shape, const std::string& color) : shape_(shape), color_(color) {}
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << shape_.Str() << " has the color " << color_;
     return oss.str();
@@ -86,14 +77,12 @@ struct ColoredShape : public Shape
 };
 
 // Another decorator
-struct TransparentShape : public Shape
-{
+struct TransparentShape : public Shape {
  public:
-  TransparentShape(Shape& shape, const uint8_t transparency_value) :
-                   shape_(shape), transparency_value_(transparency_value) {}
+  TransparentShape(Shape& shape, const uint8_t transparency_value)
+      : shape_(shape), transparency_value_(transparency_value) {}
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << shape_.Str() << " has " << static_cast<float>(transparency_value_) / 255.f * 100.f << "% transparency";
     return oss.str();
@@ -111,20 +100,17 @@ struct TransparentShape : public Shape
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace structural::decorator_pattern;
 
-TEST(DecoratorPatternTest, UsageOfTheDecoratorPattern)
-{
+TEST(DecoratorPatternTest, UsageOfTheDecoratorPattern) {
   Square square{5};
   ColoredShape red_square{square, "red"};
   std::cout << square.Str() << std::endl << red_square.Str() << std::endl;
 }
 
-TEST(DecoratorPatternTest, AggregatingTwoDecorators)
-{
+TEST(DecoratorPatternTest, AggregatingTwoDecorators) {
   Square square{5};
   ColoredShape red_square{square, "red"};
 

@@ -14,16 +14,12 @@
 #include <string>
 #include <vector>
 
-namespace creational
-{
-namespace builder_pattern
-{
+namespace creational {
+namespace builder_pattern {
 
-namespace bad
-{
+namespace bad {
 // BAD! String needs to be build piece-by-piece.
-void FunctionWithoutBuilder()
-{
+void FunctionWithoutBuilder() {
   auto text = "hello";
   std::string output{};
   output += "<p>";
@@ -33,35 +29,28 @@ void FunctionWithoutBuilder()
 }
 
 // BAD! Slighlty better but still piece-by-piece approach.
-void AnotherFunctionWithoutBuilder()
-{
+void AnotherFunctionWithoutBuilder() {
   std::string words[] = {"hello", "world"};
   std::ostringstream oss;
   oss << "<ul>\n";
-  for (auto w : words)
-    oss << " <li>" << w << "</li>\n";
+  for (auto w : words) oss << " <li>" << w << "</li>\n";
   oss << "</ul>\n";
   std::cout << oss.str() << std::endl;
 }
 }  // namespace bad
 
-namespace good
-{
-struct HtmlElement
-{
-  //API for printing elements
-  std::string str(int indent = 0) const
-  {
+namespace good {
+struct HtmlElement {
+  // API for printing elements
+  std::string str(int indent = 0) const {
     std::ostringstream oss{};
-    std::string i(indent_size*indent, ' ');
+    std::string i(indent_size * indent, ' ');
     oss << i << "<" << name << ">" << std::endl;
-    if (text.size() > 0)
-      oss << std::string(indent_size*(indent + 1), ' ') << text << std::endl;
+    if (text.size() > 0) oss << std::string(indent_size * (indent + 1), ' ') << text << std::endl;
 
-    for (const auto& e : elements)
-      oss << e.str(indent + 1);
+    for (const auto& e : elements) oss << e.str(indent + 1);
 
-    oss << i << "</" << name << ">" <<std::endl;
+    oss << i << "</" << name << ">" << std::endl;
     return oss.str();
   }
 
@@ -73,28 +62,26 @@ struct HtmlElement
    */
   HtmlElement() {}
   HtmlElement(const std::string& name, const std::string& text) : name(name), text(text) {}
+
  public:
   /**
    * In order to bypass the issue of having the constructors private
    * we can add the HtmlBuilder as a friend class
    */
   friend class HtmlBuilder;
+
  private:
   std::string name{}, text{};
   std::vector<HtmlElement> elements{};
   const size_t indent_size = 2;
 };
 
-//API for building the elements - BUILDER PATTERN
-class HtmlBuilder
-{
+// API for building the elements - BUILDER PATTERN
+class HtmlBuilder {
   HtmlElement root{};
 
  public:
-  HtmlBuilder(std::string root_name)
-  {
-    root.name = root_name;
-  }
+  HtmlBuilder(std::string root_name) { root.name = root_name; }
 
   /**
    * FLUENT BUILDER.
@@ -102,23 +89,16 @@ class HtmlBuilder
    * To make a fluent interface you need to change the return type
    * from void to a pointer or a reference to the type you are currently in.
    */
-  HtmlBuilder& AddChild(std::string child_name, std::string child_text)
-  {
+  HtmlBuilder& AddChild(std::string child_name, std::string child_text) {
     HtmlElement e{child_name, child_text};
     root.elements.emplace_back(e);
     return *this;
   }
 
-  static HtmlBuilder Create(std::string root_name)
-  {
-    return {root_name};
-  }
+  static HtmlBuilder Create(std::string root_name) { return {root_name}; }
 
   // Very strong suggestion to the customer to use the Builder is to have a Create function.
-  HtmlElement Build()
-  {
-    return root;
-  }
+  HtmlElement Build() { return root; }
 
   operator HtmlElement() const { return root; }
 
@@ -133,13 +113,11 @@ class HtmlBuilder
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace creational::builder_pattern;
 
-TEST(BuilderPatternTest, NoUseOfBuilder)
-{
+TEST(BuilderPatternTest, NoUseOfBuilder) {
   std::cout << "First function's output:\n";
   bad::FunctionWithoutBuilder();
   std::cout << std::endl;
@@ -148,11 +126,9 @@ TEST(BuilderPatternTest, NoUseOfBuilder)
   bad::AnotherFunctionWithoutBuilder();
 }
 
-TEST(BuilderPatternTest, StructureUsingBuilderPattern)
-{
+TEST(BuilderPatternTest, StructureUsingBuilderPattern) {
   good::HtmlBuilder builder{"ul"};
-  builder.AddChild("li", "hello")
-         .AddChild("li", "world");
+  builder.AddChild("li", "hello").AddChild("li", "world");
   std::cout << builder.str() << std::endl;
 
   good::HtmlBuilder builder2 = good::HtmlBuilder::Create("ul").AddChild("", "");
@@ -164,10 +140,10 @@ TEST(BuilderPatternTest, StructureUsingBuilderPattern)
 
   // Usage of the Build() function
   good::HtmlElement builded_elem = good::HtmlBuilder("ul")
-                                   .AddChild("li", "What do you think about the Builder Pattern?")
-                                   .AddChild("li", "The Build Pattern rocks!")
-                                   .AddChild("li", "Correct!")
-                                   .Build();
+                                       .AddChild("li", "What do you think about the Builder Pattern?")
+                                       .AddChild("li", "The Build Pattern rocks!")
+                                       .AddChild("li", "Correct!")
+                                       .Build();
   std::cout << builded_elem.str() << std::endl;
 
   // good::HtmlElement e; // Not available! All constructors are private therefore you have to use the builder!

@@ -10,32 +10,26 @@
  *  & Aggregate the decorated object
  *  & Inherit from the decorated object
  */
-#include<iostream>
-#include<sstream>
-#include<string>
+#include <iostream>
+#include <sstream>
+#include <string>
 
-namespace structural
-{
-namespace decorator_pattern
-{
-namespace static_decorator
-{
+namespace structural {
+namespace decorator_pattern {
+namespace static_decorator {
 
-struct Shape
-{
+struct Shape {
   virtual std::string Str() const = 0;
 };
 
-struct Circle : public Shape
-{
+struct Circle : public Shape {
  public:
-  Circle () {}
-  Circle (float radius) : radius_(radius) {}
+  Circle() {}
+  Circle(float radius) : radius_(radius) {}
 
   void Resize(float factor) { radius_ *= factor; }
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << "A circle of radius " << radius_;
     return oss.str();
@@ -45,14 +39,12 @@ struct Circle : public Shape
   float radius_;
 };
 
-struct Square : public Shape
-{
+struct Square : public Shape {
  public:
-  Square () {}
-  Square (float side) : side_(side) {}
+  Square() {}
+  Square(float side) : side_(side) {}
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << "A square with side " << side_;
     return oss.str();
@@ -63,13 +55,11 @@ struct Square : public Shape
 };
 
 // Decorator with new functionality
-struct ColoredShape : public Shape
-{
+struct ColoredShape : public Shape {
  public:
   ColoredShape(Shape& shape, const std::string& color) : shape_(shape), color_(color) {}
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << shape_.Str() << " has the color " << color_;
     return oss.str();
@@ -81,14 +71,12 @@ struct ColoredShape : public Shape
 };
 
 // Another decorator
-struct TransparentShape : public Shape
-{
+struct TransparentShape : public Shape {
  public:
-  TransparentShape(Shape& shape, const uint8_t transparency_value) :
-                   shape_(shape), transparency_value_(transparency_value) {}
+  TransparentShape(Shape& shape, const uint8_t transparency_value)
+      : shape_(shape), transparency_value_(transparency_value) {}
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << shape_.Str() << " has " << static_cast<float>(transparency_value_) / 255.f * 100.f << "% transparency";
     return oss.str();
@@ -99,19 +87,17 @@ struct TransparentShape : public Shape
   uint8_t transparency_value_;
 };
 
-template <typename T> struct ColoredShape2 : T
-{
+template <typename T>
+struct ColoredShape2 : T {
  public:
   static_assert(std::is_base_of<Shape, T>::value, "Template argument must be a Shape");
 
   ColoredShape2() {}
 
-  template <typename...Args>
-  ColoredShape2(const std::string color, Args ...args) :
-    T(std::forward<Args>(args)...), color_(color) {}
+  template <typename... Args>
+  ColoredShape2(const std::string color, Args... args) : T(std::forward<Args>(args)...), color_(color) {}
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << T::Str() << " has the color " << color_;
     return oss.str();
@@ -121,19 +107,18 @@ template <typename T> struct ColoredShape2 : T
   std::string color_;
 };
 
-template <typename T> struct TransparentShape2 : T
-{
+template <typename T>
+struct TransparentShape2 : T {
  public:
   static_assert(std::is_base_of<Shape, T>::value, "Template argument must be a Shape");
 
   TransparentShape2() {}
 
-  template <typename...Args>
-  TransparentShape2(const uint8_t transparency_value, Args ...args) :
-    T(std::forward<Args>(args)...), transparency_value_(transparency_value) {}
+  template <typename... Args>
+  TransparentShape2(const uint8_t transparency_value, Args... args)
+      : T(std::forward<Args>(args)...), transparency_value_(transparency_value) {}
 
-  std::string Str() const override
-  {
+  std::string Str() const override {
     std::ostringstream oss;
     oss << T::Str() << " has " << static_cast<float>(transparency_value_) / 255.f * 100.f << "% transparency";
     return oss.str();
@@ -151,8 +136,7 @@ template <typename T> struct TransparentShape2 : T
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace structural::decorator_pattern::static_decorator;
 
@@ -160,8 +144,7 @@ using namespace structural::decorator_pattern::static_decorator;
  * Mixing inheritance allows to access the APIs of the decorated objects.
  */
 
-TEST(DecoratorPatternTest, AggregatingManyStaticDecorators)
-{
+TEST(DecoratorPatternTest, AggregatingManyStaticDecorators) {
   ColoredShape2<Circle> green_circle{"green", 5.f};
 
   green_circle.Resize(2);
@@ -169,8 +152,7 @@ TEST(DecoratorPatternTest, AggregatingManyStaticDecorators)
   std::cout << green_circle.Str() << std::endl;
 }
 
-TEST(DecoratorPatternTest, AggregatingManyStaticDecoratorsToCreateTransparentShape)
-{
+TEST(DecoratorPatternTest, AggregatingManyStaticDecoratorsToCreateTransparentShape) {
   ColoredShape2<Circle> green_circle{"green", 5.f};
 
   green_circle.Resize(2);

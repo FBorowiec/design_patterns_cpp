@@ -8,36 +8,28 @@
 #include <tuple>
 #include <vector>
 
-namespace creational
-{
-namespace builder_pattern_groovy
-{
+namespace creational {
+namespace builder_pattern_groovy {
 
-struct Tag
-{
+struct Tag {
   std::string name, text;
   std::vector<Tag> children;
   std::vector<std::pair<std::string, std::string>> attributes;
 
   // API for printing
-  friend std::ostream& operator<<(std::ostream& os, const Tag& tag)
-  {
+  friend std::ostream& operator<<(std::ostream& os, const Tag& tag) {
     os << "<" << tag.name;
 
-    for (const auto& att : tag.attributes)
-      os << " " << att.first << "=\"" << att.second <<"\"";
+    for (const auto& att : tag.attributes) os << " " << att.first << "=\"" << att.second << "\"";
 
     if (tag.children.size() == 0 && tag.text.length() == 0)
       os << "/>" << std::endl;
-    else
-    {
+    else {
       os << ">" << std::endl;
 
-      if (tag.text.length())
-        os << tag.text << std::endl;
+      if (tag.text.length()) os << tag.text << std::endl;
 
-      for (const auto& child : tag.children)
-        os << child;
+      for (const auto& child : tag.children) os << child;
 
       os << "</" << tag.name << ">" << std::endl;
     }
@@ -52,16 +44,12 @@ struct Tag
 
 struct P : Tag  // Paragraph
 {
-  P (const std::string& text) : Tag("p", text) {}
-  P (std::initializer_list<Tag> children) : Tag{"p", children} {}
+  P(const std::string& text) : Tag("p", text) {}
+  P(std::initializer_list<Tag> children) : Tag{"p", children} {}
 };
 
-struct IMG : Tag
-{
-  explicit IMG (const std::string& url) : Tag{"img", ""}
-  {
-    attributes.emplace_back(std::make_pair("src", url));
-  }
+struct IMG : Tag {
+  explicit IMG(const std::string& url) : Tag{"img", ""} { attributes.emplace_back(std::make_pair("src", url)); }
 };
 
 }  // namespace builder_pattern_groovy
@@ -71,16 +59,14 @@ struct IMG : Tag
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace creational::builder_pattern_groovy;
 
-TEST(GroovyBuilderPatternTest, GroovyBuilderConstructionExample)
-{
-  std::cout << P {
-    IMG { "https://avatars2.githubusercontent.com/u/172399?s=460&u=e25354f3b153d250e035ed1a9097142176d02101&v=4"}
-  } << std::endl;
+TEST(GroovyBuilderPatternTest, GroovyBuilderConstructionExample) {
+  std::cout
+      << P{IMG{"https://avatars2.githubusercontent.com/u/172399?s=460&u=e25354f3b153d250e035ed1a9097142176d02101&v=4"}}
+      << std::endl;
 }
 
 }  // namespace

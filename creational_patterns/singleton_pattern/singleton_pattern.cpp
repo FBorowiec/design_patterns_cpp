@@ -26,51 +26,41 @@
  * Instead of directly using a singleton, consider depending on an abstraction (eg. an interface)
  * Consider defining singleton lifetime in DI container.
  */
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-namespace creational
-{
-namespace singleton_pattern
-{
+namespace creational {
+namespace singleton_pattern {
 
 /**
  * Dependency injection for testing the singleton's methods.
  */
-class Database
-{
+class Database {
  public:
   virtual int GetPopulation(const std::string& name) = 0;
 };
 
-class SingletonDatabase : public Database
-{
+class SingletonDatabase : public Database {
  public:
   SingletonDatabase(SingletonDatabase const&) = delete;
   void operator=(SingletonDatabase const&) = delete;
 
-  static SingletonDatabase& Get()
-  {
+  static SingletonDatabase& Get() {
     static SingletonDatabase sdb;
     return sdb;
   }
 
-  int GetPopulation(const std::string& name) override
-  {
-    return capitals[name];
-  }
+  int GetPopulation(const std::string& name) override { return capitals[name]; }
 
  private:
-  SingletonDatabase()
-  {
+  SingletonDatabase() {
     std::ifstream ifs("capitals.txt", std::ios::in);
     std::string s, s2;
 
-    while(getline(ifs, s))
-    {
+    while (getline(ifs, s)) {
       getline(ifs, s2);
       int population = std::stoi(s2);
       capitals[s] = population;
@@ -80,9 +70,9 @@ class SingletonDatabase : public Database
   std::unordered_map<std::string, int> capitals;
 };
 
-class DummyDatabase : public Database
-{
+class DummyDatabase : public Database {
   std::unordered_map<std::string, int> capitals;
+
  public:
   DummyDatabase() {
     capitals["alpha"] = 1;
@@ -90,33 +80,24 @@ class DummyDatabase : public Database
     capitals["gamma"] = 3;
   }
 
-  int GetPopulation(const std::string& name) override
-  {
-    return capitals[name];
-  }
+  int GetPopulation(const std::string& name) override { return capitals[name]; }
 };
 
-struct SingletonRecordFinder
-{
-  int TotalPopulation(std::vector<std::string> names)
-  {
+struct SingletonRecordFinder {
+  int TotalPopulation(std::vector<std::string> names) {
     int result{0};
-    for (auto& name : names)
-      result += SingletonDatabase::Get().GetPopulation(name);
+    for (auto& name : names) result += SingletonDatabase::Get().GetPopulation(name);
     return result;
   }
 };
 
-struct ConfigurableSingletonRecordFinder
-{
+struct ConfigurableSingletonRecordFinder {
   Database& db;
   ConfigurableSingletonRecordFinder(Database& db) : db(db) {}
 
-  int TotalPopulation(std::vector<std::string> names)
-  {
+  int TotalPopulation(std::vector<std::string> names) {
     int result{0};
-    for (auto& name : names)
-      result += db.GetPopulation(name);
+    for (auto& name : names) result += db.GetPopulation(name);
     return result;
   }
 };
@@ -124,41 +105,37 @@ struct ConfigurableSingletonRecordFinder
 }  // namespace singleton_pattern
 }  // namespace creational
 
-//TEST----------------------------------------------------------------------------------------------------------------|
+// TEST----------------------------------------------------------------------------------------------------------------|
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace creational::singleton_pattern;
 
-TEST(SingletonPatternTest, UsageOfTheSingletonPattern)
-{
+TEST(SingletonPatternTest, UsageOfTheSingletonPattern) {
   std::string city = "Tokyo";
-  std::cout << city << " has population " <<  SingletonDatabase::Get().GetPopulation("Tokyo") << std::endl;
+  std::cout << city << " has population " << SingletonDatabase::Get().GetPopulation("Tokyo") << std::endl;
 }
 
 /**
  * Here a dangerous thing happens. The test is strongly tied to the actual database (capitals.txt),
  * which makes it more of an integration test than a unit test.
  */
-TEST(RecordFinderTest, SingletonTotalPopulationTest)
-{
+TEST(RecordFinderTest, SingletonTotalPopulationTest) {
   SingletonRecordFinder rf;
   std::vector<std::string> names{"Seoul", "Mexico City"};
 
   int tp = rf.TotalPopulation(names);
 
-  EXPECT_EQ(17400000+17500000, tp);
+  EXPECT_EQ(17400000 + 17500000, tp);
 }
 
 /**
  * The solution is to create a dummy database inheriting from the base database only the methods to be tested.
  * Then a configurable record finder can therefore test the needed functionalities.
  */
-TEST(RecordFinderTest, DependantPopulationTest)
-{
+TEST(RecordFinderTest, DependantPopulationTest) {
   DummyDatabase db;
   ConfigurableSingletonRecordFinder rf{db};
 

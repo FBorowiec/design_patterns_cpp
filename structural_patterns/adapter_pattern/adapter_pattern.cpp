@@ -9,10 +9,8 @@
 #include <memory>
 #include <string>
 
-namespace structural
-{
-namespace adapter_pattern
-{
+namespace structural {
+namespace adapter_pattern {
 
 /**
  * The Target defines the domain-specific interface used by the client code.
@@ -21,9 +19,7 @@ class Target {
  public:
   virtual ~Target() = default;
 
-  virtual std::string Request() const {
-    return "Target: The default target's behavior.";
-  }
+  virtual std::string Request() const { return "Target: The default target's behavior."; }
 };
 
 /**
@@ -33,9 +29,7 @@ class Target {
  */
 class Adaptee {
  public:
-  std::string SpecificRequest() const {
-    return ".eetpadA eht fo roivaheb laicepS";
-  }
+  std::string SpecificRequest() const { return ".eetpadA eht fo roivaheb laicepS"; }
 };
 
 /**
@@ -49,8 +43,7 @@ class Adapter : public Target {
  public:
   Adapter(std::unique_ptr<Adaptee> adaptee) : adaptee_(std::move(adaptee)) {}
 
-  std::string Request() const override
-  {
+  std::string Request() const override {
     std::string to_reverse = this->adaptee_->SpecificRequest();
     std::reverse(to_reverse.begin(), to_reverse.end());
     return "Adapter: (TRANSLATED) " + to_reverse;
@@ -64,8 +57,7 @@ class Adapter : public Target {
 
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace structural::adapter_pattern;
 
@@ -73,12 +65,13 @@ using namespace structural::adapter_pattern;
  * The client code supports all classes that follow the Target interface.
  */
 void ClientCode(const std::unique_ptr<Target> target) {
-  if(!target) { return; }
+  if (!target) {
+    return;
+  }
   std::cout << target->Request();
 }
 
-TEST(AdapterPatternTest, UsageOfTheAdapterPattern)
-{
+TEST(AdapterPatternTest, UsageOfTheAdapterPattern) {
   std::cout << "Client: I can work just fine with the Target objects:\n";
   auto target = std::make_unique<Target>();
   ClientCode(std::move(target));

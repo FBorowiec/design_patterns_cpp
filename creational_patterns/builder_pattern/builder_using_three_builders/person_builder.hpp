@@ -3,16 +3,13 @@
 
 #include "person.hpp"
 
-namespace creational
-{
-namespace builder_using_three_builders
-{
+namespace creational {
+namespace builder_using_three_builders {
 
 class PersonAddressBuilder;
 class PersonJobBuilder;
 
-class PersonBuilderBase
-{
+class PersonBuilderBase {
  public:
   PersonAddressBuilder Lives() const { return PersonAddressBuilder{person_}; }
   PersonJobBuilder Works() const { return PersonJobBuilder{person_}; }
@@ -24,8 +21,7 @@ class PersonBuilderBase
 };
 
 // The only reason there is a PersonBuilder is not to have many duplications of person at each inheritance level
-class PersonBuilder : public PersonBuilderBase
-{
+class PersonBuilder : public PersonBuilderBase {
  public:
   PersonBuilder() : PersonBuilderBase{person} {}
 
