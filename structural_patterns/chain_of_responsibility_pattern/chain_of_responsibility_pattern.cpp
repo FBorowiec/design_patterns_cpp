@@ -73,12 +73,11 @@ class IncreaseDefenceModifier : public CreatureModifier {
   }
 };
 
-class NoBonusesModifier: public CreatureModifier {
+class NoBonusesModifier : public CreatureModifier {
  public:
   NoBonusesModifier(Creature& creature) : CreatureModifier(creature) {}
 
   void Handle() override {}
-
 };
 
 }  // namespace chain_of_responsibility_pattern

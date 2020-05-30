@@ -9,16 +9,16 @@ namespace liskov_substitution_principle {
 
 class Rectangle {
  public:
-  Rectangle(int width, int height) : width(width), height(height) {}
-  int GetWidth() { return width; }
-  int GetHeight() { return height; }
-  virtual void SetWidth(int width) { Rectangle::width = width; }
-  virtual void SetHeight(int height) { Rectangle::height = height; }
+  Rectangle(int width, int height) : width_(width), height_(height) {}
+  int GetWidth() { return width_; }
+  int GetHeight() { return height_; }
+  virtual void SetWidth(int width) { Rectangle::width_ = width; }
+  virtual void SetHeight(int height) { Rectangle::height_ = height; }
 
-  int Area() const { return width * height; }
+  int Area() const { return width_ * height_; }
 
  protected:
-  int width{}, height{};
+  int width_{}, height_{};
 };
 
 static void Process(Rectangle& r) {
@@ -37,8 +37,8 @@ namespace bad {
 class Square : public Rectangle {
  public:
   Square(int size) : Rectangle(size, size) {}
-  void SetWidth(int width) override { this->width = this->height = width; }
-  void SetHeight(int height) override { this->height = this->width = height; }
+  void SetWidth(int width) override { this->width_ = this->height_ = width; }
+  void SetHeight(int height) override { this->height_ = this->width_ = height; }
 };
 }  // namespace bad
 

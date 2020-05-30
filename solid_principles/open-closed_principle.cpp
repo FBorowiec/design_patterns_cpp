@@ -68,19 +68,19 @@ struct BetterFilter : public Filter<Product> {
 };
 
 struct ColorSpecification : Specification<Product> {
-  ColorSpecification(Color color) : color(color) {}
+  ColorSpecification(Color color) : color_(color) {}
 
-  bool IsSatisfied(Product* item) const override { return item->color == color; }
+  bool IsSatisfied(Product* item) const override { return item->color == color_; }
 
-  Color color{};
+  Color color_{};
 };
 
 struct SizeSpecification : Specification<Product> {
-  explicit SizeSpecification(Size size) : size(size) {}
+  explicit SizeSpecification(Size size) : size_(size) {}
 
-  bool IsSatisfied(Product* item) const override { return item->size == size; }
+  bool IsSatisfied(Product* item) const override { return item->size == size_; }
 
-  Size size{};
+  Size size_{};
 };
 
 // But what if we need to combine specifications? Here you use a combinator

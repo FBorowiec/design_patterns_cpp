@@ -9,15 +9,15 @@ struct Document;
 
 namespace bad {
 struct IMachine {
-  virtual void print(Document& doc) = 0;
-  virtual void scan(Document& doc) = 0;
-  virtual void fax(Document& doc) = 0;
+  virtual void Print(Document& doc) = 0;
+  virtual void Scan(Document& doc) = 0;
+  virtual void Fax(Document& doc) = 0;
 };
 
 struct MultiFunctionPrinter : IMachine {
-  void print(Document& doc) override {}
-  void scan(Document& doc) override {}
-  void fax(Document& doc) override {}
+  void Print(Document& doc) override { (void)doc; }
+  void Scan(Document& doc) override { (void)doc; }
+  void Fax(Document& doc) override { (void)doc; }
 };
 
 struct Scanner : IMachine {
@@ -26,11 +26,14 @@ struct Scanner : IMachine {
    * You give the API to print for a scanner that will return a dummy message at best.
    * The IMachine interface is simply too big
    */
-  void print(Document& doc) override { /* BAD! What should a Scanner print? */
+  void Print(Document& doc) override { /* BAD! What should a Scanner print? */
+    (void)doc;
   }
-  void scan(Document& doc) override { /* Oll Korrect! */
+  void Scan(Document& doc) override { /* Oll Korrect! */
+    (void)doc;
   }
-  void fax(Document& doc) override { /* BAD! What should a Scanner fax? */
+  void Fax(Document& doc) override { /* BAD! What should a Scanner fax? */
+    (void)doc;
   }
 };
 }  // namespace bad
@@ -41,19 +44,20 @@ namespace good {
  * The interfaces are segregated.
  */
 struct IPrinter {
-  virtual void print(Document& doc) = 0;
+  virtual void Print(Document& doc) = 0;
 };
 
 struct IScanner {
-  virtual void scan(Document& doc) = 0;
+  virtual void Scan(Document& doc) = 0;
 };
 
 struct IFaxer {
-  virtual void fax(Document& doc) = 0;
+  virtual void Fax(Document& doc) = 0;
 };
 
 struct Printer : IPrinter {
-  void print(Document& doc) override { /* print stuff */
+  void Print(Document& doc) override { /* print stuff */
+    (void)doc;
   }
 };
 
@@ -62,13 +66,13 @@ struct IMachine : IPrinter, IScanner {};
 
 struct Machine : IMachine {
   // Decorator pattern:
-  IPrinter& printer;
-  IScanner& scanner;
+  IPrinter& printer_;
+  IScanner& scanner_;
 
-  Machine(IPrinter& printer, IScanner& scanner) : printer(printer), scanner(scanner) {}
+  Machine(IPrinter& printer, IScanner& scanner) : printer_(printer), scanner_(scanner) {}
 
-  void print(Document& doc) override { printer.print(doc); }
-  void scan(Document& doc) override { scanner.scan(doc); }
+  void Print(Document& doc) override { printer_.Print(doc); }
+  void Scan(Document& doc) override { scanner_.Scan(doc); }
 };
 }  // namespace good
 
