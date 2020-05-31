@@ -11,7 +11,7 @@
 #include <ostream>
 #include <string>
 
-namespace structural {
+namespace behavioral {
 namespace chain_of_responsibility_pattern {
 
 /**
@@ -81,7 +81,7 @@ class NoBonusesModifier : public CreatureModifier {
 };
 
 }  // namespace chain_of_responsibility_pattern
-}  // namespace structural
+}  // namespace behavioral
 
 // TEST---------------------------------------------------------------------------------------------------------------|
 
@@ -89,7 +89,7 @@ class NoBonusesModifier : public CreatureModifier {
 
 namespace {
 
-using namespace structural::chain_of_responsibility_pattern;
+using namespace behavioral::chain_of_responsibility_pattern;
 
 TEST(ChainOfResponsibilityPatternTest, UsageOfTheChainOfResponsibilityPattern) {
   Creature goblin{"Goblin", 1, 1};

@@ -32,6 +32,9 @@ TEST(MonostateTest, UsageOfMonostate) {
   int id = p.GetId();
 
   Printer p2;  // Printer p2 is actually going to use the same data
+
+  (void)id;
+  (void)p2;
 }
 
 }  // namespace
