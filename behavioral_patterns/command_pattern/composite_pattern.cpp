@@ -87,9 +87,7 @@ struct CompositeBanckAccountCommand : public Command {
       if (ok) {
         cmd.Call();
         ok = cmd.succeeded;
-      }
-      else
-      {
+      } else {
         cmd.succeeded = false;
       }
     }
