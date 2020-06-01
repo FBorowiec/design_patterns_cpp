@@ -1,26 +1,9 @@
-/**
- * INTENT:
- * Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle ther
- * request. Chain the receiving objects and pass the request along the chain until an object handles it.
- * MOTIVATION:
- *  - Ordinary C++ statements are perishable
- *  - Want an object that represents an operation
- *
- * It is an object that represents an instruction to perform a particular action. Contains all the information
- * necessary for the action to be taken.
- *
- * Command / Query separation:
- * Command = asking for an action or change (e.g., please set your attack value to 2)
- * Query = asking for information (e.g., please give me your attack value)
- * CQS = having separate means of sending commands and queries
- * In GoF context, both commands and queries are represented with the Command design pattern.
- */
 #include <iostream>
 #include <ostream>
 #include <vector>
 
 namespace behavioral {
-namespace command_pattern {
+namespace composite_command_pattern {
 
 struct BankAccount {
  public:
@@ -95,7 +78,41 @@ struct BankAccountCommand : public Command {
   int amount_{0};
 };
 
-}  // namespace command_pattern
+struct CompositeBanckAccountCommand : public Command {
+  CompositeBanckAccountCommand(const std::vector<BankAccountCommand>& items) : items_(items) {}
+
+  void Call() override {
+    bool ok = true;
+    for (auto& cmd : items_) {
+      if (ok) {
+        cmd.Call();
+        ok = cmd.succeeded;
+      }
+      else
+      {
+        cmd.succeeded = false;
+      }
+    }
+  }
+
+  void Undo() override {
+    for (auto it = items_.rbegin(); it != items_.rend(); ++it) {
+      it->Undo();
+    }
+  }
+
+ private:
+  std::vector<BankAccountCommand> items_{};
+};
+
+struct MoneyTransferCommand : public CompositeBanckAccountCommand {
+ public:
+  MoneyTransferCommand(BankAccount& from, BankAccount& to, int amount)
+      : CompositeBanckAccountCommand({BankAccountCommand{BankAccountCommand::withdraw, from, amount},
+                                      BankAccountCommand{BankAccountCommand::deposit, to, amount}}) {}
+};
+
+}  // namespace composite_command_pattern
 }  // namespace behavioral
 
 // TEST---------------------------------------------------------------------------------------------------------------|
@@ -104,39 +121,32 @@ struct BankAccountCommand : public Command {
 
 namespace {
 
-using namespace behavioral::command_pattern;
+using namespace behavioral::composite_command_pattern;
 
 TEST(CommandTest, UsageOfTheCommandPatternForDepositingMoney) {
-  BankAccount ba;
-  std::vector<BankAccountCommand> commands{BankAccountCommand{BankAccountCommand::deposit, ba, 100},
-                                           BankAccountCommand{BankAccountCommand::withdraw, ba, 20}};
+  BankAccount ba, ba2;
+  ba.Deposit(100);
 
-  std::cout << ba;
+  MoneyTransferCommand cmd{ba, ba2, 50};
 
-  for (auto& cmd : commands) {
-    cmd.Call();
-  }
+  cmd.Call();
+  std::cout << ba << std::endl << ba2 << std::endl;
 
-  std::cout << ba;
+  cmd.Undo();
+  std::cout << ba << std::endl << ba2 << std::endl;
 }
 
-TEST(CommandTest, UsageOfTheCommandPatternForUndoingAMoneyDeposit) {
-  BankAccount ba;
-  std::vector<BankAccountCommand> commands{BankAccountCommand{BankAccountCommand::deposit, ba, 100},
-                                           BankAccountCommand{BankAccountCommand::withdraw, ba, 20}};
+TEST(CommandTest, UsageOfTheSuccessFlagForIllegalOperations) {
+  BankAccount ba, ba2;
+  ba.Deposit(100);
 
-  std::cout << ba;
+  MoneyTransferCommand cmd{ba, ba2, 5000};
 
-  for (auto& cmd : commands) {
-    cmd.Call();
-  }
+  cmd.Call();
+  std::cout << ba << std::endl << ba2 << std::endl;
 
-  // Undo
-  for (auto it = commands.rbegin(); it != commands.rend(); ++it) {
-    it->Undo();
-  }
-
-  std::cout << ba;
+  cmd.Undo();
+  std::cout << ba << std::endl << ba2 << std::endl;
 }
 
 }  // namespace
