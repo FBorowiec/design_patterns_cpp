@@ -22,31 +22,31 @@ namespace prototype_pattern {
 
 struct Address {
   Address(const std::string& street, const std::string& city, const int suite)
-      : street(street), city(city), suite(suite) {}
+      : street_(street), city_(city), suite_(suite) {}
 
   friend std::ostream& operator<<(std::ostream& os, const Address& address) {
-    os << "Street: " << address.street << "\nCity: " << address.city << "\nSuite: " << address.suite;
+    os << "Street: " << address.street_ << "\nCity: " << address.city_ << "\nSuite: " << address.suite_;
     return os;
   }
 
-  std::string street, city;
-  int suite;
+  std::string street_, city_;
+  int suite_;
 };
 
 struct Contact {
-  Contact(const std::string& name, std::unique_ptr<Address> address) : name(name), address(std::move(address)) {}
-  Contact(const Contact& other) : name(other.name) {
-    address = std::make_unique<Address>(other.address->street, other.address->city, other.address->suite);
+  Contact(const std::string& name, std::unique_ptr<Address> address) : name_(name), address_(std::move(address)) {}
+  Contact(const Contact& other) : name_(other.name_) {
+    address_ = std::make_unique<Address>(other.address_->street_, other.address_->city_, other.address_->suite_);
   }
   ~Contact() {}
 
   friend std::ostream& operator<<(std::ostream& os, const Contact& contact) {
-    os << "Name: " << contact.name << "\n" << *contact.address;
+    os << "Name: " << contact.name_ << "\n" << *contact.address_;
     return os;
   }
 
-  std::string name;
-  std::unique_ptr<Address> address;
+  std::string name_;
+  std::unique_ptr<Address> address_;
 };
 
 struct EmployeeFactory {
@@ -66,8 +66,8 @@ struct EmployeeFactory {
  private:
   static std::unique_ptr<Contact> NewEmployee(const std::string& name, const int suite, const Contact& prototype) {
     auto result = std::make_unique<Contact>(prototype);
-    result->name = name;
-    result->address->suite = suite;
+    result->name_ = name;
+    result->address_->suite_ = suite;
     return result;
   }
 };
@@ -92,8 +92,8 @@ TEST(PrototypePatternTest, UsagesOfThePrototypePattern) {
 
   // It's better to make a copy of the object and just make the needed modifications:
   auto jane = john;
-  jane.name = "Jane Smith";
-  jane.address->suite = 103;
+  jane.name_ = "Jane Smith";
+  jane.address_->suite_ = 103;
 
   std::cout << john << std::endl << jane << std::endl;
 }
