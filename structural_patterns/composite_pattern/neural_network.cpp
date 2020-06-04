@@ -4,23 +4,7 @@
 namespace structural {
 namespace composite_pattern {
 
-struct Neuron;
-
-// CRTP - Curiously Recurring Template Pattern
-template <typename Self>
-struct SomeNeurons {
-  template <typename T>
-  void ConnectTo(T& other) {
-    for (Neuron& from : *static_cast<Self*>(this)) {
-      for (Neuron& to : other) {
-        from.out.push_back(&to);
-        to.in.push_back(&from);
-      }
-    }
-  }
-};
-
-struct Neuron : public SomeNeurons<Neuron> {
+struct Neuron {
   std::vector<Neuron*> in, out;
   unsigned int id;
 
@@ -52,6 +36,19 @@ struct Neuron : public SomeNeurons<Neuron> {
          << " " << n->id << " " << std::endl;
     }
     return os;
+  }
+};
+
+template <typename Self>
+struct SomeNeurons {
+  template <typename T>
+  void ConnectTo(T& other) {
+    for (Neuron& from : *static_cast<Self*>(this)) {
+      for (Neuron& to : other) {
+        from.out.push_back(&to);
+        to.in.push_back(&from);
+      }
+    }
   }
 };
 
