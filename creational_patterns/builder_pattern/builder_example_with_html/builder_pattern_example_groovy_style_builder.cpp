@@ -12,34 +12,34 @@ namespace creational {
 namespace builder_pattern_groovy {
 
 struct Tag {
-  std::string name, text;
-  std::vector<Tag> children;
+  std::string name_, text_;
+  std::vector<Tag> children_;
   std::vector<std::pair<std::string, std::string>> attributes;
 
   // API for printing
   friend std::ostream& operator<<(std::ostream& os, const Tag& tag) {
-    os << "<" << tag.name;
+    os << "<" << tag.name_;
 
     for (const auto& att : tag.attributes) os << " " << att.first << "=\"" << att.second << "\"";
 
-    if (tag.children.size() == 0 && tag.text.length() == 0)
+    if (tag.children_.size() == 0 && tag.text_.length() == 0)
       os << "/>" << std::endl;
     else {
       os << ">" << std::endl;
 
-      if (tag.text.length()) os << tag.text << std::endl;
+      if (tag.text_.length()) os << tag.text_ << std::endl;
 
-      for (const auto& child : tag.children) os << child;
+      for (const auto& child : tag.children_) os << child;
 
-      os << "</" << tag.name << ">" << std::endl;
+      os << "</" << tag.name_ << ">" << std::endl;
     }
 
     return os;
   }
 
  protected:
-  Tag(const std::string& name, const std::string& text) : name(name), text(text) {}
-  Tag(const std::string& name, const std::vector<Tag>& children) : name(name), children(children) {}
+  Tag(const std::string& name, const std::string& text) : name_(name), text_(text) {}
+  Tag(const std::string& name, const std::vector<Tag>& children) : name_(name), children_(children) {}
 };
 
 struct P : Tag  // Paragraph
