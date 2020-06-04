@@ -15,6 +15,7 @@ class Printer {
  private:
   static int id;
 };
+int Printer::id = 1;
 
 }  // namespace monostate_pattern
 }  // namespace creational
