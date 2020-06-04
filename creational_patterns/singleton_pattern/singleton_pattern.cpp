@@ -92,12 +92,12 @@ struct SingletonRecordFinder {
 };
 
 struct ConfigurableSingletonRecordFinder {
-  Database& db;
-  ConfigurableSingletonRecordFinder(Database& db) : db(db) {}
+  Database& db_;
+  ConfigurableSingletonRecordFinder(Database& db) : db_(db) {}
 
   int TotalPopulation(std::vector<std::string> names) {
     int result{0};
-    for (auto& name : names) result += db.GetPopulation(name);
+    for (auto& name : names) result += db_.GetPopulation(name);
     return result;
   }
 };
