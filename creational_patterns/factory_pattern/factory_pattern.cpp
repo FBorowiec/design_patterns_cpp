@@ -28,21 +28,21 @@ enum class PointType { cartesian, polar };
 
 class Point {
  public:
-  Point(float x, float y) : x(x), y(y) {}
+  Point(double x, double y) : x_(x), y_(y) {}
 
   friend std::ostream& operator<<(std::ostream& os, const Point& point) {
-    os << "x: " << point.x << " y: " << point.y;
+    os << "x: " << point.x_ << " y: " << point.y_;
     return os;
   }
 
  private:
-  float x, y;
+  double x_, y_;
 };
 
 struct PointFactory {
-  static Point NewCartesian(float x, float y) { return {x, y}; }
+  static Point NewCartesian(double x, double y) { return {x, y}; }
 
-  static Point NewPolar(float rho, float theta) { return {rho * std::cos(theta), rho * std::sin(theta)}; }
+  static Point NewPolar(double rho, double theta) { return {rho * std::cos(theta), rho * std::sin(theta)}; }
 };
 
 }  // namespace factory_pattern
