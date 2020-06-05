@@ -9,10 +9,6 @@ build --cxxopt='-lstdc++fs'
 # Stick with the bazel default toolchain for host tool builds
 build --host_crosstool_top=//external:cc_toolchain
 
-# Prohibit the usage of ccache
-build --client_env=CC=/usr/bin/gcc-7    # ubuntu 18.04
-build --client_env=CXX=/usr/bin/g++-7   # ubuntu 18.04
-
 # Compilation flags go here
 build --cxxopt=-Wall
 build --cxxopt=-Werror

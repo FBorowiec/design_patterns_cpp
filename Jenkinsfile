@@ -5,7 +5,6 @@ pipeline {
             steps {
                 echo 'Building..'
 		        sh 'bazel build //...'
-                archiveArtifacts artifacts: 'bazel-*', fingerprint: true
             }
         }
     }
