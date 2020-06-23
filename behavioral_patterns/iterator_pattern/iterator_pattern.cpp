@@ -9,7 +9,12 @@
  *  - Range-based for loop
  *  - Coroutines
  *
- * The iterator is an object that facilitates the traversal of a data structure.
+ * The iterator is an object that facilitates the traversal of a data structure:
+ *  - An object can be iterated (traversed) if it defines a begin() / end() pair.
+ *  - An iterator specifies how you can traverse an object.
+ *  - Typically requires implementation of the '!=' and '++' operators
+ *  - '++' is called sporadically, so cannot be recursive but you can use coroutines
+ *    (allowing recursion through generator-yielding functions)
  */
 #include <iostream>
 #include <string>
