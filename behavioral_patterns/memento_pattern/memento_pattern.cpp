@@ -24,7 +24,7 @@ class Memento {
   friend class BankAccount;
 
  private:
-  int balance_;
+  int balance_{0};
 };
 
 class BankAccount {

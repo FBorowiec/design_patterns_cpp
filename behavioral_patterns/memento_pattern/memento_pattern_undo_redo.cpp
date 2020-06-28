@@ -45,14 +45,14 @@ class BankAccount2 {
     if (m) {
       balance_ = m->balance_;
       changes_.push_back(m);
-      current_ = changes_.size() - 1;
+      current_ = static_cast<int>(changes_.size()) - 1;
     }
   }
 
   std::shared_ptr<Memento> Undo() {
     if (current_ > 0) {
       --current_;
-      auto m = changes_[current_];
+      auto m = changes_[static_cast<long unsigned int>(current_)];
       balance_ = m->balance_;
       return m;
     }
@@ -60,9 +60,9 @@ class BankAccount2 {
   }
 
   std::shared_ptr<Memento> Redo() {
-    if (current_ + 1 < changes_.size()) {
+    if (current_ + 1 < static_cast<int>(changes_.size())) {
       ++current_;
-      auto m = changes_[current_];
+      auto m = changes_[static_cast<long unsigned int>(current_)];
       balance_ = m->balance_;
       return m;
     }
@@ -77,7 +77,7 @@ class BankAccount2 {
  private:
   int balance_{0};
   std::vector<std::shared_ptr<Memento>> changes_;
-  int current_;
+  int current_{0};
 };
 
 }  // namespace memento_pattern
