@@ -19,20 +19,22 @@ cc_test(
   ]
 )
 
-cc_library(
-  name = "event_broker",
-  hdrs = glob(["event_broker/*.hpp"]),
-  copts = ["-w"],
-  deps = ["@boost//:signals2",],
-)
-
-#bazel run --copt=-w //behavioral_patterns/mediator_pattern:mediator_pattern_event_broker
-cc_test(
-  name = "mediator_pattern_event_broker",
-  srcs = ["event_broker/event_broker_test.cpp"],
-  deps = [
-    "@googletest//:gtest",
-    "@googletest//:gtest_main",
-    ":event_broker",
-  ]
-)
+#cc_library(
+#  name = "event_broker",
+#  hdrs = glob(["event_broker/*.hpp"]),
+#  copts = ["-w"],
+#  deps = ["@boost//:signals2",],
+#)
+#
+## Uncomment WORKSPACE'S boost and:
+## bazel run --copt=-w //behavioral_patterns/mediator_pattern:mediator_pattern_event_broker
+#cc_test(
+#  name = "mediator_pattern_event_broker",
+#  srcs = ["event_broker/event_broker_test.cpp"],
+#  deps = [
+#    "@googletest//:gtest",
+#    "@googletest//:gtest_main",
+#    ":event_broker",
+#  ]
+#)
+#
