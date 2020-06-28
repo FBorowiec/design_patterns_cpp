@@ -8,23 +8,24 @@ namespace iterator_pattern {
  *      /   \
  *     B     C
  */
-template <typename T> struct BinaryTree;
+template <typename T>
+struct BinaryTree;
 
-
-template <typename T> struct Node {
+template <typename T>
+struct Node {
   T value_ = T();
-  Node<T> *left_{nullptr}, *right_{nullptr}, *parent_{nullptr};
+  Node<T>*left_{nullptr}, *right_{nullptr}, *parent_{nullptr};
   BinaryTree<T>* tree_{nullptr};
 
   Node(T value) : value_(value) {}
 
-  Node(T value, Node<T> *left, Node<T> *right) : value_(value), left_(left), right_(right) {
+  Node(T value, Node<T>* left, Node<T>* right) : value_(value), left_(left), right_(right) {
     this->right_->tree_ = this->left_->tree_ = tree_;
     this->right_->parent_ = this->left_->parent_ = this;
   }
 
   void SetTree(BinaryTree<T>* t) {
-    tree_= t;
+    tree_ = t;
     if (left_) left_->SetTree(t);
     if (right_) right_->SetTree(t);
   }
@@ -35,33 +36,31 @@ template <typename T> struct Node {
   }
 };
 
-template <typename T> struct BinaryTree
-{
+template <typename T>
+struct BinaryTree {
   Node<T>* root_{nullptr};
 
-  BinaryTree(Node<T>* root) : root_(root) {
-    root->SetTree(this);
+  BinaryTree(Node<T>* root) : root_(root) { root->SetTree(this); }
+
+  ~BinaryTree() {
+    if (root_) delete root_;
   }
 
-  ~BinaryTree() { if(root_) delete root_; }
-
   // Iterator for Binary Tree
-  template <typename U> struct PreOrderIterator {
+  template <typename U>
+  struct PreOrderIterator {
     Node<U>* current_;
     PreOrderIterator(Node<U>* current) : current_(current) {}
 
-    bool operator!=(const PreOrderIterator<U>& other) {
-      return current_ != other.current_;
-    }
+    bool operator!=(const PreOrderIterator<U>& other) { return current_ != other.current_; }
 
     PreOrderIterator<U>& operator++() {
       if (current_->right_) {
         current_ = current_->right_;
-        while(current_->left_) {
+        while (current_->left_) {
           current_ = current_->left_;
         }
-      }
-      else {
+      } else {
         Node<T>* p = current_->parent_;
         while (p && current_ == p->right_) {
           current_ = p;
@@ -72,9 +71,7 @@ template <typename T> struct BinaryTree
       return *this;
     }
 
-    Node<U>& operator*() {
-      return *current_;
-    }
+    Node<U>& operator*() { return *current_; }
   };  // PreOrderIterator
 
   typedef PreOrderIterator<T> iterator;
@@ -88,9 +85,7 @@ template <typename T> struct BinaryTree
     return iterator{nullptr};
   }
 
-  iterator end() {
-    return iterator{nullptr};
-  }
+  iterator end() { return iterator{nullptr}; }
 };
 
 }  // namespace iterator_pattern
@@ -112,14 +107,13 @@ TEST(IteratorPatternTest, IteratorsInTheStandardTemplateLibrary) {
    *      /   \
    *    m'm   m'f
    */
-  BinaryTree<std::string> family {
-    new Node<std::string>{"Me", new Node<std::string>{"Mother",
-                                                      new Node<std::string>{"Mother's mother"},
-                                                      new Node<std::string>{"Mother's father"}
-                          },
-                          new Node<std::string>{"Father"}}};
+  BinaryTree<std::string> family{
+      new Node<std::string>{"Me",
+                            new Node<std::string>{"Mother", new Node<std::string>{"Mother's mother"},
+                                                  new Node<std::string>{"Mother's father"}},
+                            new Node<std::string>{"Father"}}};
 
-  for (auto it = family.begin(); it!= family.end(); ++it) {
+  for (auto it = family.begin(); it != family.end(); ++it) {
     std::cout << (*it).value_ << std::endl;
   }
 }

@@ -20,8 +20,8 @@
  * 4. Components have functions the mediator can call.
  * 5. Event processing (e.g., Rx) libraries make communication easier to implement.
  */
-#include "person.hpp"
 #include "chat_room.hpp"
+#include "person.hpp"
 
 // TEST---------------------------------------------------------------------------------------------------------------|
 

@@ -10,11 +10,11 @@
 namespace behavioral {
 namespace mediator_pattern {
 
-struct ChatRoom{
+struct ChatRoom {
   void Broadcast(const std::string& origin, const std::string& message);
   void Join(Person* p);
   void Message(const std::string& origin, const std::string& who, const std::string& message) {
-    auto target = std::find_if(std::begin(people), std::end(people), [&](const Person*p) { return p->name_ == who; });
+    auto target = std::find_if(std::begin(people), std::end(people), [&](const Person* p) { return p->name_ == who; });
     if (target != std::end(people)) {
       (*target)->Receive(origin, message);
     }

@@ -44,7 +44,7 @@ TEST(IteratorPatternTest, IteratorsInTheStandardTemplateLibrary) {
   // reverse iterator over vector of strings
   for (auto ri = std::rbegin(names); ri != rend(names); ++ri) {
     std::cout << *ri;
-    if (ri+1 != std::rend(names)) std::cout << ", ";
+    if (ri + 1 != std::rend(names)) std::cout << ", ";
   }
   std::cout << std::endl;
 
