@@ -18,11 +18,12 @@ cc_test(
   ]
 )
 
-cc_test(
-  name = "tree_iterator_with_coroutines",
-  srcs = ["tree_iterator_with_coroutines.cpp"],
-  deps = [
-    "@googletest//:gtest",
-    "@googletest//:gtest_main",
-  ]
-)
+#cc_test(
+#  name = "tree_iterator_with_coroutines",
+#  srcs = ["tree_iterator_with_coroutines.cpp"],
+#  copts = ["-lstdc++fs"],
+#  deps = [
+#    "@googletest//:gtest",
+#    "@googletest//:gtest_main",
+#  ]
+#)

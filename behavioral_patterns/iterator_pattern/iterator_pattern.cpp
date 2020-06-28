@@ -51,6 +51,7 @@ TEST(IteratorPatternTest, IteratorsInTheStandardTemplateLibrary) {
   // const reverse iterator over vector of strings
   std::vector<std::string>::const_reverse_iterator jack = std::crbegin(names);
   // *jack += std::string(" Reacher"); <-- FAILS!
+  (void)jack;
 
   /**
    * Ranged-based for-loop:
