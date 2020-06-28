@@ -12,6 +12,13 @@
  * The Mediator is therefore a component that facilitates communication between each
  * other components without them necessarily being aware of each otehr or having
  * direct (reference) access to each other.
+ *
+ * IMPLEMENTATION:
+ * 1. Create the mediator and have each object in the system refer to it: eg. in a field.
+ * 2. Mediator engages in bidirectional communication with its connected components.
+ * 3. Mediator has functions the components can call.
+ * 4. Components have functions the mediator can call.
+ * 5. Event processing (e.g., Rx) libraries make communication easier to implement.
  */
 #include "person.hpp"
 #include "chat_room.hpp"
