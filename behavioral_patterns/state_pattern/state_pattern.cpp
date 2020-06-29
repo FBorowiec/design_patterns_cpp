@@ -19,6 +19,13 @@
 namespace behavioral {
 namespace state_pattern {
 
+/**
+ * The traditional approach to the state pattern is not very good.
+ * The idea that you have every individual states allowing functions to be called on it,
+ * to switch to a completely different state. But the implementation of this function has to
+ * end with a 'delete this' which might result in undefined behavior.
+ */
+
 class LightSwitch;
 
 struct State {
