@@ -36,13 +36,13 @@ struct State {
 };
 
 struct OnState : public State {
-  OnState() { std::cout << "Light is turned on\n"; }
+  OnState() { std::cout << "Light is turned on!\n"; }
 
   void Off(LightSwitch* ls) override;
 };
 
 struct OffState : public State {
-  OffState() { std::cout << "Light is switched off\n"; }
+  OffState() { std::cout << "Light is switched off!\n"; }
 
   void On(LightSwitch* ls) override;
 };
@@ -62,13 +62,13 @@ class LightSwitch {
 };
 
 void OnState::Off(LightSwitch* ls) {
-  std::cout << "Switching light off!" << std::endl;
+  std::cout << "Switching light off..." << std::endl;
   ls->SetState(new OffState());
   // delete this;
 }
 
 void OffState::On(LightSwitch* ls) {
-  std::cout << "Switching light on!" << std::endl;
+  std::cout << "Switching light on..." << std::endl;
   ls->SetState(new OnState());
   // delete this;
 }
@@ -84,6 +84,11 @@ namespace {
 
 using namespace behavioral::state_pattern;
 
-TEST(StatePatternTest, UsageOfTheStatePattern) {}
+TEST(StatePatternTest, UsageOfTheStatePattern) {
+  LightSwitch ls;
+  ls.On();
+  ls.Off();
+  ls.Off();
+}
 
 }  // namespace
