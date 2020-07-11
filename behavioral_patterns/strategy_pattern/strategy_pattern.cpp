@@ -14,6 +14,7 @@
  */
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -33,8 +34,8 @@ enum class OutpuFormat {
 
 struct ListStrategy {
   virtual ~ListStrategy() = default;
-  virtual void Start(std::ostringstream& oss);
-  virtual void End(std::ostringstream& oss);
+  virtual void Start(std::ostringstream& oss) { oss << ""; }
+  virtual void End(std::ostringstream& oss) { oss << ""; }
   virtual void AddListItem(std::ostringstream& oss, const std::string& item) = 0;
 };
 
