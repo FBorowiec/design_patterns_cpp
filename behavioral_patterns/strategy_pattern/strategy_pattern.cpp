@@ -13,6 +13,9 @@
  * Also know as the Policy design patterns.
  */
 #include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
 
 namespace behavioral {
 namespace strategy_pattern {
@@ -29,12 +32,58 @@ enum class OutpuFormat {
 };
 
 struct ListStrategy {
-  virtual void Start(std::ostringstream& oss) {}
-  virtual void End(std::ostringstream& oss) {}
+  virtual ~ListStrategy() = default;
+  virtual void Start(std::ostringstream& oss);
+  virtual void End(std::ostringstream& oss);
   virtual void AddListItem(std::ostringstream& oss, const std::string& item) = 0;
 };
 
+struct MarkdownStrategy : public ListStrategy {
+  void AddListItem(std::ostringstream& oss, const std::string& item) override { oss << " * " << item << "\n"; }
+};
 
+struct HtmlStrategy : public ListStrategy {
+  void Start(std::ostringstream& oss) override { oss << "<ul>\n"; }
+
+  void AddListItem(std::ostringstream& oss, const std::string& item) override {
+    oss << "  <li>" << item << "</li>" << std::endl;
+  }
+
+  void End(std::ostringstream& oss) override { oss << "</ul>\n"; }
+};
+
+struct TextProcessor {
+ public:
+  void Clear() {
+    oss_.str("");
+    oss_.clear();
+  }
+
+  void AppendList(const std::vector<std::string>& items) {
+    list_strategy_->Start(oss_);
+    for (auto& item : items) {
+      list_strategy_->AddListItem(oss_, item);
+    }
+    list_strategy_->End(oss_);
+  }
+
+  void SetOutputFormat(const OutpuFormat& format) {
+    switch (format) {
+      case OutpuFormat::markdown:
+        list_strategy_ = std::make_unique<MarkdownStrategy>();
+        break;
+      case OutpuFormat::html:
+        list_strategy_ = std::make_unique<HtmlStrategy>();
+        break;
+    }
+  }
+
+  std::string str() const { return oss_.str(); }
+
+ private:
+  std::ostringstream oss_;
+  std::unique_ptr<ListStrategy> list_strategy_;
+};
 
 }  // namespace strategy_pattern
 }  // namespace behavioral
@@ -48,6 +97,18 @@ namespace {
 using namespace behavioral::strategy_pattern;
 
 TEST(StrategyPatternTest, UsageOfTheStrategyPattern) {
+  std::vector<std::string> items{"foo", "bar", "baz"};
+
+  TextProcessor tp;
+  tp.SetOutputFormat(OutpuFormat::markdown);
+  tp.AppendList(items);
+
+  std::cout << tp.str() << std::endl;
+
+  tp.Clear();
+  tp.SetOutputFormat(OutpuFormat::html);
+  tp.AppendList(items);
+  std::cout << tp.str() << std::endl;
 }
 
 }  // namespace
