@@ -8,3 +8,13 @@ cc_test(
     "@googletest//:gtest_main",
   ]
 )
+ad("@rules_cc//cc:defs.bzl",  "cc_test")
+
+cc_test(
+  name = "reflective_visitor_pattern",
+  srcs = ["reflective_visitor_pattern.cpp"],
+  deps = [
+    "@googletest//:gtest",
+    "@googletest//:gtest_main",
+  ]
+)
