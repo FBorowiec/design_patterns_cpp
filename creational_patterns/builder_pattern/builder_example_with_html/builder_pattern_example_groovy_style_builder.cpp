@@ -1,7 +1,3 @@
-/**
- * SECOND EXAMPLE!
- * Please refer to the first example for more details.
- */
 #include <iostream>
 #include <sstream>
 #include <string>
