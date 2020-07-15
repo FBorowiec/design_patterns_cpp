@@ -26,3 +26,12 @@ cc_test(
     "@googletest//:gtest_main",
   ]
 )
+
+cc_test(
+  name = "acyclic_visitor_pattern",
+  srcs = ["acyclic_visitor_pattern.cpp"],
+  deps = [
+    "@googletest//:gtest",
+    "@googletest//:gtest_main",
+  ]
+)
