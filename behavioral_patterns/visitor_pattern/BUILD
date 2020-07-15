@@ -44,3 +44,12 @@ cc_test(
     "@googletest//:gtest_main",
   ]
 )
+
+cc_test(
+  name = "std_variant_and_visit",
+  srcs = ["std_variant_and_visit.cpp"],
+  deps = [
+    "@googletest//:gtest",
+    "@googletest//:gtest_main",
+  ]
+)

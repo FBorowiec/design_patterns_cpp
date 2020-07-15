@@ -2,3 +2,4 @@ singleton_pattern tests - Population is always zero.
 neural_network - wrong layers
 builder_pattern : builder_using_three_builders
 iterator: binary_tree_iterator - experimental doesn't include
+visitor: std_variant_and_visit - second test doesn't compile

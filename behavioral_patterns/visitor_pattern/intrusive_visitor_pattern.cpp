@@ -10,7 +10,7 @@
  * Create an external component to handle rendering.
  *  - But preferably avoid type checks
  *
- * The Visitor Pattern is when a component (visitor) is allowed to travers teh entire inheritance hierarchy.
+ * The Visitor Pattern is when a component (visitor) is allowed to travers the entire inheritance hierarchy.
  * Implemented by propagating a single visit() method throught the entire hierarchy.
  */
 #include <iostream>
