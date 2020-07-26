@@ -19,7 +19,7 @@
  * Making a 'safe' singleton needs:
  *  - Hiding or deleting the type's constructor, copy constructor
  *    and copy assignment operators
- *  - Create a static method that returens a reference to a static member
+ *  - Create a static method that returns a reference to a static member
  *  - Guaranteed to be thread-safe since C++11
  * Types with 'hard' dependencies on singletons are difficult to test:
  *  - Cannot decouple the singleton and supply a fake object
@@ -60,8 +60,8 @@ class SingletonDatabase : public Database {
     std::ifstream ifs("capitals.txt", std::ios::in);
     std::string s, s2;
 
-    while (getline(ifs, s)) {
-      getline(ifs, s2);
+    while (std::getline(ifs, s)) {
+      std::getline(ifs, s2);
       int population = std::stoi(s2);
       capitals[s] = population;
     }
@@ -122,7 +122,7 @@ TEST(SingletonPatternTest, UsageOfTheSingletonPattern) {
  * Here a dangerous thing happens. The test is strongly tied to the actual database (capitals.txt),
  * which makes it more of an integration test than a unit test.
  */
-TEST(RecordFinderTest, DISABLED_SingletonTotalPopulationTest) {
+TEST(RecordFinderTest, SingletonTotalPopulationTest) {
   SingletonRecordFinder rf;
   std::vector<std::string> names{"Seoul", "Mexico City"};
 
