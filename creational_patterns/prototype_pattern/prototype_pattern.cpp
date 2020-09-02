@@ -11,7 +11,7 @@
  *
  * DESCRIPTION:
  * A partially or fully initialized object that you copy (clone) and make use of.
- *  - To clone it means you need to implement your own deep copy funciontality
+ *  - To clone it means you need to implement your own deep copy functionality
  */
 #include <iostream>
 #include <memory>
