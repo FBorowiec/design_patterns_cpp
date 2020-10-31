@@ -27,13 +27,11 @@ class PersonFactory {
 // TEST---------------------------------------------------------------------------------------------------------------|
 #include "gtest/gtest.h"
 
-namespace
-{
+namespace {
 
 using namespace creational::factory_pattern_exercise;
 
-TEST(PersonFactoryTest, SimplePersonTest)
-{
+TEST(PersonFactoryTest, SimplePersonTest) {
   PersonFactory pf;
 
   auto p1 = pf.create_person("Chris");
@@ -43,4 +41,4 @@ TEST(PersonFactoryTest, SimplePersonTest)
   ASSERT_EQ(1, p2.id) << "Expected the second created person's id to be = 1";
 }
 
-} // namespace
+}  // namespace

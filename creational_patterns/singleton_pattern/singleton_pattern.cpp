@@ -115,7 +115,7 @@ using namespace creational::singleton_pattern;
 
 TEST(SingletonPatternTest, UsageOfTheSingletonPattern) {
   std::string city = "Tokyo";
-  std::cout << city << " has population " << SingletonDatabase::Get().GetPopulation("Tokyo") << std::endl;
+  std::cout << city << " has population " << SingletonDatabase::Get().GetPopulation(city) << std::endl;
 }
 
 /**
