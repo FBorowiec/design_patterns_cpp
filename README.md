@@ -16,4 +16,4 @@ Design Patterns are typically split into three categories. This is called _Gamma
 
 ## Required
 
-**Bazel**: Please visit the official Bazel website for instalation.
+**Bazel**: Please visit the official Bazel website for installation.
