@@ -122,7 +122,7 @@ TEST(SingletonPatternTest, UsageOfTheSingletonPattern) {
  * Here a dangerous thing happens. The test is strongly tied to the actual database (capitals.txt),
  * which makes it more of an integration test than a unit test.
  */
-TEST(RecordFinderTest, SingletonTotalPopulationTest) {
+TEST(RecordFinderTest, DISABLED_SingletonTotalPopulationTest) {
   SingletonRecordFinder rf;
   std::vector<std::string> names{"Seoul", "Mexico City"};
 
