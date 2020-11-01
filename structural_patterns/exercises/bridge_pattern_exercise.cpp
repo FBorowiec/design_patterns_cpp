@@ -38,7 +38,6 @@ struct Renderer {
 };
 
 struct Shape {
-
   Shape(const Renderer& renderer) : renderer_{renderer} {}
 
   std::string str() const {
