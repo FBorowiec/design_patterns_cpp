@@ -88,7 +88,6 @@ struct ExpressionProcessor {
 }  // namespace behavioral
 
 // TEST---------------------------------------------------------------------------------------------------------------|
-#include <iostream>
 #include "gtest/gtest.h"
 
 namespace {
