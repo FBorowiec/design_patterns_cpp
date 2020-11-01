@@ -4,7 +4,7 @@
  *  - You can only withdraw money if you have enough in your account
  */
 namespace behavioral {
-namespace comman_pattern_exercise {
+namespace command_pattern_exercise {
 
 struct Command {
   enum Action { deposit, withdraw } action;
@@ -31,7 +31,7 @@ struct Account {
   }
 };
 
-}  // namespace comman_pattern_exercise
+}  // namespace command_pattern_exercise
 }  // namespace behavioral
 
 // TEST---------------------------------------------------------------------------------------------------------------|
@@ -40,7 +40,7 @@ struct Account {
 
 namespace {
 
-using namespace behavioral::comman_pattern_exercise;
+using namespace behavioral::command_pattern_exercise;
 
 TEST(CommandPatternExerciseTest, SimpleTest) {
   Account a;
