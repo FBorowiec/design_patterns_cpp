@@ -3,6 +3,7 @@ load("@rules_cc//cc:defs.bzl",  "cc_test")
 cc_test(
   name = "singleton_pattern",
   srcs = ["singleton_pattern.cpp"],
+  data = ["capitals.txt"],
   deps = [
     "@googletest//:gtest",
     "@googletest//:gtest_main",
