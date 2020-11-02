@@ -11,7 +11,9 @@
  *  - signal and slots
  *
  * An observer is an object that wishes to be informed about events happening in the system.
- * The entity generating the events is an observable
+ * The entity generating the events is an observable.
+ * Observale implementation is always intrusive (observer doesn't need to be).
+ * Multithreaded/reentrant use can cause issues.
  */
 #include <iostream>
 #include <string>
@@ -34,7 +36,7 @@ class Observable {
 
   void Subscribe(Observer<T>& observer) { observers.push_back(&observer); }
 
-  void Unubscribe(Observer<T>& observer) {
+  void Unsubscribe(Observer<T>& observer) {
     observers.erase(remove(observers.begin(), observers.end(), &observer), observers.end());
   }
 
@@ -90,7 +92,7 @@ TEST(ObserverPatternTest, UsageOfTheObserverPattern) {
   person.SetAge(11);
   person.SetAge(12);
 
-  person.Unubscribe(cpo);
+  person.Unsubscribe(cpo);
   person.SetAge(13);
 }
 
