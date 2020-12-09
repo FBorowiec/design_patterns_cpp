@@ -1,5 +1,7 @@
 # Design Patterns
 
+This is my Design Patterns repository containing state of the art examples of practical usage of Design Patterns in modern C++.
+
 ## Gamma Categorization
 
 Design Patterns are typically split into three categories. This is called _Gamma Categorization_ after Erich Gamma, one of Gang of Four authors.
@@ -14,6 +16,29 @@ Design Patterns are typically split into three categories. This is called _Gamma
 3. **Behavioral Patterns**:
    * They are all different - no central theme
 
-## Required
+## How to run the code locally with *Bazel* already installed on host
 
-**Bazel**: Please visit the official Bazel website for installation.
+```bash
+bazel test //creational_patterns/factory_pattern
+```
+
+## Run the code inside a container
+
+You can use the following Docker image to instantiate a container locally with Ubuntu and Bazel already installed:
+
+```bash
+docker run -it --rm framaxwlad/ubuntu_dev:latest
+```
+
+There you can simply clone the repository:
+
+```bash
+git clone https://github.com/FBorowiec/design_patterns.git
+cd design_patterns/
+```
+
+And use a bazel command to run the program:
+
+```bash
+bazel test //structural_patterns/exercises:structural_patterns_test
+```
