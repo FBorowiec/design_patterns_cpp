@@ -18,6 +18,12 @@ Design Patterns are typically split into three categories. This is called _Gamma
 
 ## How to run the code locally with *Bazel* already installed on host
 
+### Bazel installation
+
+[Install Bazel](https://docs.bazel.build/versions/master/install.html)
+
+Once you have successfully installed *Bazel* you can run the code using:
+
 ```bash
 bazel test //creational_patterns/factory_pattern
 ```
