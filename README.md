@@ -24,7 +24,7 @@ bazel test //creational_patterns/factory_pattern
 
 ## Run the code inside a container
 
-You can use the following Docker image to instantiate a container locally with Ubuntu and Bazel already installed:
+You can use my following Docker image to instantiate a container locally with Ubuntu and Bazel already installed:
 
 ```bash
 docker run -it --rm framaxwlad/ubuntu_dev:latest
